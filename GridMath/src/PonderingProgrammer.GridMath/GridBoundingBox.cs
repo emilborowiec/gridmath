@@ -122,5 +122,17 @@ namespace PonderingProgrammer.GridMath
         {
             return new GridBoundingBox(XInterval.Relate(other.XInterval, xRelation, xOffset), YInterval.Relate(other.YInterval, yRelation, yOffset));
         }
+
+        public GridBoundingBox PlaceBeside(GridBoundingBox other, Grid4Direction direction)
+        {
+            return direction switch
+            {
+                Grid4Direction.Top => Relate(other, Relation.CenterToCenter(), Relation.EndToStart(), 0, -1),
+                Grid4Direction.Right => Relate(other, Relation.StartToEnd(), Relation.CenterToCenter(), 1, 0),
+                Grid4Direction.Bottom => Relate(other, Relation.CenterToCenter(), Relation.StartToEnd(), 0, 1),
+                Grid4Direction.Left => Relate(other, Relation.EndToStart(), Relation.CenterToCenter(), -1, 0),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
     }
 }
