@@ -4,4 +4,18 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>PonderingProgrammer.GridMath</PackageId>
+        <Version>0.1.0</Version>
+        <Authors>Emil Borowiec</Authors>
+        <Company>PonderingProgrammer</Company>
+        <PackageTags>Grid 2D Math Geometry Game</PackageTags>
+        <Description>
+            GridMath is a small library for creating and manipulating objects on 2d grid coordinate system.
+        </Description>
+        <PackageProjectUrl>https://github.com/ponderingprogrammer/gridmath</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ponderingprogrammer/gridmath</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
 </Project>

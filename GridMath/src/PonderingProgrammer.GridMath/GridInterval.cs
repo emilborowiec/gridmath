@@ -9,7 +9,8 @@ namespace PonderingProgrammer.GridMath
     /// <remarks>
     /// Values in grid space are discreet integers and are modelled simply as int.
     /// Mapping from real space to grid space is chosen such that N on grid corresponds to R[N,N+1).
-    /// Cast to int, which truncates floating part, effectively provides mapping from R to grid.
+    /// For coordinates, cast to int, which truncates floating part, effectively provides mapping from R to grid.
+    /// For lengths and distances, however, real are rounded up.
     /// </remarks>
     /// <remarks>
     /// The GridInterval is primarily represented as a pair of numbers <c>Min</c> and <c>Max</c>.
@@ -33,11 +34,18 @@ namespace PonderingProgrammer.GridMath
             return new GridInterval(min, maxExcl - 1);
         }
 
-        public static GridInterval FromLength(int min, int range)
+        public static GridInterval FromLength(int min, int length)
         {
-            if (range < 1) throw new ArgumentException("Interval cannot be empty - length must be greater than 0");
-            return FromExclusiveMax(min, min + range);
+            if (length < 1) throw new ArgumentException("Interval cannot be empty - length must be greater than 0");
+            return FromExclusiveMax(min, min + length);
         }
+        
+        public static GridInterval FromRealLength(int min, double realLength)
+        {
+            var gridLength = Convert.ToInt32(Math.Ceiling(realLength));
+            return FromLength(min, gridLength);
+        }
+
 
         public readonly int Min;
         public readonly int Max;
@@ -103,7 +111,7 @@ namespace PonderingProgrammer.GridMath
 
         public GridInterval SetMin(int min)
         {
-            return FromLength(min, min + Length);
+            return FromLength(min, Length);
         }
 
         public GridInterval SetMax(int max)
@@ -127,10 +135,9 @@ namespace PonderingProgrammer.GridMath
             };
         }
 
-        public GridInterval Multiply(double fraction)
+        public GridInterval Multiply(double value)
         {
-            var fractionLength = (int)(Length * fraction);
-            return FromLength(Min, fractionLength);
+            return FromRealLength(Min, Length * value);
         }
     }
 }
