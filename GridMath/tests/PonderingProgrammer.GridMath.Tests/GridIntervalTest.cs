@@ -89,6 +89,7 @@ namespace PonderingProgrammer.GridMath.Tests
         [Theory]
         [InlineData(2, 4, 3)]
         [InlineData(2, 5, 3)]
+        [InlineData(-5, -2, -4)]
         public void TestCenter(int min, int max, int expected)
         {
             var interval = new GridInterval(min, max);
@@ -172,14 +173,102 @@ namespace PonderingProgrammer.GridMath.Tests
         }
         
         [Theory]
-        [InlineData(0, 10, 0.01, 1)]
+        [InlineData(0, 10, 0.01, null)]
         [InlineData(0, 10, 0.2, 2)]
+        [InlineData(0, 10, 0.21, 2)]
         [InlineData(0, 10, 0.5, 5)]
-        public void TestFraction(int min, int maxExcl, double fraction, int expectedMax)
+        [InlineData(0, 10, 1.2, 12)]
+        [InlineData(0, 10, 1.21, 12)]
+        [InlineData(0, 10, -0.5, null)]
+        public void TestMultiplication(int min, int maxExcl, double multiplier, int? expectedMax)
         {
             var interval = GridInterval.FromExclusiveMax(min, maxExcl);
-            var result = interval.Multiply(fraction);
-            Assert.Equal(expectedMax, result.MaxExcl);
+            var result = interval.Multiply(multiplier);
+            Assert.Equal(expectedMax, result?.MaxExcl);
+        }
+
+        [Theory]
+        [InlineData(-4, -3)]
+        [InlineData(-3, -2)]
+        [InlineData(-2, -1)]
+        [InlineData(-1, 0)]
+        [InlineData(0, 0)]
+        [InlineData(1, 0)]
+        [InlineData(2, 1)]
+        [InlineData(3, 2)]
+        public void TestDistance(int value, int expected)
+        {
+            var interval = new GridInterval(-1, 1);
+            Assert.Equal(expected, interval.Distance(value));
+        }
+
+        [Theory]
+        [InlineData(-3, -2, -1)]
+        [InlineData(-2, -1, 0)]
+        [InlineData(-1, 0, 0)]
+        [InlineData(0, 1, 0)]
+        [InlineData(1, 2, 0)]
+        [InlineData(2, 3, 0)]
+        [InlineData(3, 4, 1)]
+        [InlineData(-2, 3, 0)]
+        public void TestDistanceToOther(int otherMin, int otherMax, int expected)
+        {
+            var interval = new GridInterval(-1, 2);
+            Assert.Equal(expected, interval.Distance(new GridInterval(otherMin, otherMax)));
+        }
+        
+        [Theory]
+        [InlineData(-2, 0)]
+        [InlineData(-1, 1)]
+        [InlineData(0, 2)]
+        [InlineData(1, 3)]
+        [InlineData(2, -2)]
+        [InlineData(3, -1)]
+        [InlineData(4, 0)]
+        public void TestDepth(int value, int expected)
+        {
+            var interval = new GridInterval(-1, 3);
+            Assert.Equal(expected, interval.Depth(value));
+        }
+        [Theory]
+        [InlineData(-3, -2, 0)]
+        [InlineData(-2, -1, 1)]
+        [InlineData(-1, 0, 2)]
+        [InlineData(0, 1, 3)]
+        [InlineData(1, 2, -2)]
+        [InlineData(2, 3, -1)]
+        [InlineData(3, 4, 0)]
+        public void TestDepthToSeparateOther(int otherMin, int otherMax, int expected)
+        {
+            var interval = new GridInterval(-1, 2);
+            Assert.Equal(expected, interval.Depth(new GridInterval(otherMin, otherMax)));
+        }
+
+        [Fact]
+        public void SeparateTest()
+        {
+            var i1 = new GridInterval(0, 2);
+            var i2 = new GridInterval(1, 3);
+            var i3 = new GridInterval(2, 4);
+            var i4 = new GridInterval(-1, 0);
+            var i12 = GridInterval.Separate(i1, i2);
+            Assert.Equal(-1, i12[0].Min);
+            Assert.Equal(2, i12[1].Min);
+            var i13 = GridInterval.Separate(i1, i3);
+            Assert.Equal(-1, i13[0].Min);
+            Assert.Equal(2, i13[1].Min);
+            var i14 = GridInterval.Separate(i1, i4);
+            Assert.Equal(0, i14[0].Min);
+            Assert.Equal(-2, i14[1].Min);
+        }
+
+        [Fact]
+        public void TestMapping()
+        {
+            var n1 = 1.1;
+            var n2 = -0.9;
+            Assert.Equal(1, (int)n1);
+            Assert.Equal(0, (int)n2);
         }
     }
 }
