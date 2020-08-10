@@ -49,15 +49,6 @@ namespace PonderingProgrammer.GridMath
             return FromLength(min, gridLength);
         }
 
-        public static GridInterval[] Separate(GridInterval i1, GridInterval i2)
-        {
-            var depth = i1.Depth(i2);
-            if (depth == 0) return new[] {i1, i2};
-            var t1 = RealToGrid.ToGrid(depth / 2.0);
-            var t2 = (depth % 2 == 0) ? -t1 : RealToGrid.ToGrid(-(depth + 1) / 2.0);
-            return new[] {i1.Translate(t1), i2.Translate(t2)};
-        }
-
         public readonly int Min;
         public readonly int Max;
         
@@ -65,8 +56,6 @@ namespace PonderingProgrammer.GridMath
         public int Length => MaxExcl - Min;
         public int Center => RealToGrid.ToGrid((Min + Max) / 2.0);
         
-
-
         public GridInterval(int min, int max)
         {
             if (min > max) throw new ArgumentException("min cannot be greater than max");
@@ -216,7 +205,5 @@ namespace PonderingProgrammer.GridMath
             var toLeft = other.Min - MaxExcl;
             return Math.Abs(toRight) <= Math.Abs(toLeft) ? toRight : toLeft;
         }
-        
-        
     }
 }

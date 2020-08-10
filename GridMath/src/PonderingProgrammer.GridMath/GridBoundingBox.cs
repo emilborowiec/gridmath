@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PonderingProgrammer.GridMath
 {
@@ -22,15 +24,16 @@ namespace PonderingProgrammer.GridMath
             if (minX > maxX || minY > maxY) throw new ArgumentException($"min cannot be greater than max");
             var xInterval = new GridInterval(minX, maxX);
             var yInterval = new GridInterval(minY, maxY);
-            return new GridBoundingBox(xInterval, yInterval);             
+            return new GridBoundingBox(xInterval, yInterval);
         }
 
         public static GridBoundingBox FromMinMaxExcl(int minX, int minY, int maxXExcl, int maxYExcl)
         {
-            if (maxXExcl <= minX || maxYExcl <= minY) throw new ArgumentException($"Max is exclusive and must be greater than Min");
+            if (maxXExcl <= minX || maxYExcl <= minY)
+                throw new ArgumentException($"Max is exclusive and must be greater than Min");
             var xInterval = GridInterval.FromExclusiveMax(minX, maxXExcl);
             var yInterval = GridInterval.FromExclusiveMax(minY, maxYExcl);
-            return new GridBoundingBox(xInterval, yInterval);             
+            return new GridBoundingBox(xInterval, yInterval);
         }
 
         public static GridBoundingBox FromSize(int minX, int minY, int width, int height)
@@ -40,7 +43,7 @@ namespace PonderingProgrammer.GridMath
             var yInterval = GridInterval.FromExclusiveMax(minY, minY + height);
             return new GridBoundingBox(xInterval, yInterval);
         }
-        
+
         public GridBoundingBox(GridInterval xInterval, GridInterval yInterval)
         {
             XInterval = xInterval;

@@ -6,7 +6,7 @@
 
     <PropertyGroup>
         <PackageId>PonderingProgrammer.GridMath</PackageId>
-        <Version>0.1.1</Version>
+        <Version>0.2.0</Version>
         <Authors>Emil Borowiec</Authors>
         <Company>PonderingProgrammer</Company>
         <PackageTags>Grid 2D Math Geometry Game</PackageTags>
