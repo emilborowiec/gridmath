@@ -30,12 +30,7 @@ namespace PonderingProgrammer.GridMath
 
             var startsIndex = 0;
             var endsIndex = 0;
-            var unendedIntervals = 0;
             
-            var maxOverlapping = 0;
-            var position = 0;
-            var dict = new Dictionary<int, List<int>>();
-            dict[sortedStarts[0].Min] = new List<int>();
             List<int> currentOverlapList = null;
 
             while (startsIndex < sortedStarts.Length && endsIndex < sortedEnds.Length)
@@ -73,7 +68,6 @@ namespace PonderingProgrammer.GridMath
         {
             var weightDict = new Dictionary<int, int>();
             var positionSum = 0;
-            var weightSum = 0;
             foreach (var interval in intervals)
             {
                 for (var i = interval.Min; i < interval.MaxExcl; i++)
