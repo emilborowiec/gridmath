@@ -7,10 +7,10 @@ namespace PonderingProgrammer.GridMath.Tests
         [Fact]
         public void TestEquality()
         {
-            var c1 = new GridCoordinate(2, 2);
-            var c2 = new GridCoordinate(2, 2);
-            var c3 = new GridCoordinate();
-            var c4 = new GridCoordinate();
+            var c1 = new GridCoordinatePair(2, 2);
+            var c2 = new GridCoordinatePair(2, 2);
+            var c3 = new GridCoordinatePair();
+            var c4 = new GridCoordinatePair();
             Assert.Equal(c1, c2);
             Assert.Equal(c3, c4);
             Assert.NotEqual(c1, c3);
@@ -23,7 +23,7 @@ namespace PonderingProgrammer.GridMath.Tests
         [InlineData(-2.1, -1.9, -3, -2)]
         public void TestMappingFromReal(double x, double y, int expectedX, int expectedY)
         {
-            var c = GridCoordinate.FromReal(x, y);
+            var c = GridCoordinatePair.FromReal(x, y);
             Assert.Equal(expectedX, c.X);
             Assert.Equal(expectedY, c.Y);
         }

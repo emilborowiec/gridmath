@@ -11,7 +11,7 @@ namespace PonderingProgrammer.GridMath
     /// This mapping can be implemented by getting Floor of the real value.
     /// Note that simple cast of double to int only truncates floating part and gives correct results only for positive numbers.
     /// </remarks>
-    public struct GridCoordinate
+    public readonly struct GridCoordinatePair
     {
         public readonly int X;
         public readonly int Y;
@@ -22,12 +22,12 @@ namespace PonderingProgrammer.GridMath
         /// <param name="x">x ordinate in real space</param>
         /// <param name="y">y ordinate in real space</param>
         /// <returns>Corresponding GridCoordinate</returns>
-        public static  GridCoordinate FromReal(double x, double y)
+        public static  GridCoordinatePair FromReal(double x, double y)
         {
-            return new GridCoordinate(RealToGrid.ToGrid(x), RealToGrid.ToGrid(y));
+            return new GridCoordinatePair(RealToGrid.ToGrid(x), RealToGrid.ToGrid(y));
         }
 
-        public GridCoordinate(int x, int y)
+        public GridCoordinatePair(int x, int y)
         {
             this.X = x;
             this.Y = y;

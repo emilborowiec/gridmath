@@ -36,23 +36,27 @@ namespace PonderingProgrammer.GridMath
             var position = 0;
             var dict = new Dictionary<int, List<int>>();
             dict[sortedStarts[0].Min] = new List<int>();
-            var currentOverlapList = new List<int>();
+            List<int> currentOverlapList = null;
 
-            while (endsIndex < sortedStarts.Length && endsIndex < sortedEnds.Length)
+            while (startsIndex < sortedStarts.Length && endsIndex < sortedEnds.Length)
             {
                 if (sortedStarts[startsIndex].Min < sortedEnds[endsIndex].MaxExcl)
                 {
+                    if (currentOverlapList == null) currentOverlapList = new List<int>();
                     currentOverlapList.Add(sortedStarts[startsIndex].index);
                     startsIndex++;
                 }
                 else
                 {
-                    if (currentOverlapList.Count > 1)
+                    if (currentOverlapList != null && currentOverlapList.Count > 1)
                     {
-                        listOfOverlappingLists.Add(currentOverlapList);
+                        if (!listOfOverlappingLists.Any(list => list.Intersect(currentOverlapList).Count() == currentOverlapList.Count))
+                        {
+                            listOfOverlappingLists.Add(currentOverlapList);
+                        }
+                        currentOverlapList = new List<int>(currentOverlapList);
+                        currentOverlapList.Remove(sortedEnds[endsIndex].index);
                     }
-                    currentOverlapList.Remove(sortedEnds[endsIndex].index);
-                    currentOverlapList = new List<int>(currentOverlapList);
                     endsIndex++;
                 }
             }

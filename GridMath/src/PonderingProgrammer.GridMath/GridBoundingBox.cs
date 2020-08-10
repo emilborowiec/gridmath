@@ -14,10 +14,10 @@ namespace PonderingProgrammer.GridMath
     {
         public readonly GridInterval XInterval;
         public readonly GridInterval YInterval;
-        public readonly GridCoordinate TopLeft;
-        public readonly GridCoordinate TopRight;
-        public readonly GridCoordinate BottomRight;
-        public readonly GridCoordinate BottomLeft;
+        public readonly GridCoordinatePair TopLeft;
+        public readonly GridCoordinatePair TopRight;
+        public readonly GridCoordinatePair BottomRight;
+        public readonly GridCoordinatePair BottomLeft;
 
         public static GridBoundingBox FromMinMax(int minX, int minY, int maxX, int maxY)
         {
@@ -48,10 +48,10 @@ namespace PonderingProgrammer.GridMath
         {
             XInterval = xInterval;
             YInterval = yInterval;
-            TopLeft = new GridCoordinate(XInterval.Min, YInterval.Min);
-            TopRight = new GridCoordinate(XInterval.MaxExcl - 1, YInterval.Min);
-            BottomRight = new GridCoordinate(XInterval.MaxExcl - 1, YInterval.MaxExcl - 1);
-            BottomLeft = new GridCoordinate(XInterval.Min, YInterval.MaxExcl - 1);
+            TopLeft = new GridCoordinatePair(XInterval.Min, YInterval.Min);
+            TopRight = new GridCoordinatePair(XInterval.MaxExcl - 1, YInterval.Min);
+            BottomRight = new GridCoordinatePair(XInterval.MaxExcl - 1, YInterval.MaxExcl - 1);
+            BottomLeft = new GridCoordinatePair(XInterval.Min, YInterval.MaxExcl - 1);
         }
 
         public int MinX => XInterval.Min;
@@ -68,9 +68,9 @@ namespace PonderingProgrammer.GridMath
             return XInterval.Contains(x) && YInterval.Contains(y);
         }
 
-        public bool Contains(GridCoordinate coordinate)
+        public bool Contains(GridCoordinatePair coordinatePair)
         {
-            return Contains(coordinate.X, coordinate.Y);
+            return Contains(coordinatePair.X, coordinatePair.Y);
         }
 
         public bool Contains(GridBoundingBox box)
