@@ -2,7 +2,7 @@
 
 namespace PonderingProgrammer.GridMath.Tests
 {
-    public class GridCoordinateTest
+    public class GridCoordinatePairTest
     {
         [Fact]
         public void TestEquality()
@@ -26,6 +26,30 @@ namespace PonderingProgrammer.GridMath.Tests
             var c = GridCoordinatePair.FromReal(x, y);
             Assert.Equal(expectedX, c.X);
             Assert.Equal(expectedY, c.Y);
+        }
+
+        [Theory]
+        [InlineData(3, 0, 3)]
+        [InlineData(0, 3, 3)]
+        [InlineData(3, 3, 6)]
+        [InlineData(2, 1, 3)]
+        [InlineData(-1, -1, 2)]
+        public void TestManhattanDistance(int x, int y, int expected)
+        {
+            var c = new GridCoordinatePair(0, 0);
+            Assert.Equal(expected, c.ManhattanDistance(x, y));
+        }
+
+        [Theory]
+        [InlineData(3, 0, 3)]
+        [InlineData(0, 3, 3)]
+        [InlineData(3, 3, 3)]
+        [InlineData(2, 1, 2)]
+        [InlineData(-1, -1, 1)]
+        public void TestChebyshevDistance(int x, int y, int expected)
+        {
+            var c = new GridCoordinatePair(0, 0);
+            Assert.Equal(expected, c.ChebyshevDistance(x, y));
         }
     }
 }

@@ -32,5 +32,15 @@ namespace PonderingProgrammer.GridMath
             this.X = x;
             this.Y = y;
         }
+
+        public int ManhattanDistance(int x, int y)
+        {
+            return Math.Abs(x - X) + Math.Abs(y - Y);
+        }
+
+        public int ChebyshevDistance(int x, int y)
+        {
+            return Math.Max(Math.Abs(x - X), Math.Abs(y - Y));
+        }
     }
 }
