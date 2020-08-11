@@ -99,25 +99,26 @@ namespace PonderingProgrammer.GridMath
                     if (newTotalMaxY < boxes[i].MaxY) newTotalMaxY = boxes[i].MaxY;
                     break;
                 }
+            }
 
-                var newCenterOfMass = FindCenterOfMass(boxes);
-                var translation = alignment switch
-                {
-                    BoxAlignment.TOP_LEFT => new GridCoordinatePair(originalTotalMinX, originalTotalMinY),
-                    BoxAlignment.TOP => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMinY),
-                    BoxAlignment.TOP_RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMinY),
-                    BoxAlignment.RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, centerOfMass.Y - newCenterOfMass.Y),
-                    BoxAlignment.BOTTOM_RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMaxY - newTotalMaxY),
-                    BoxAlignment.BOTTOM => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMaxY - newTotalMaxY),
-                    BoxAlignment.BOTTOM_LEFT => new GridCoordinatePair(originalTotalMinX, originalTotalMaxY - newTotalMaxY),
-                    BoxAlignment.LEFT => new GridCoordinatePair(originalTotalMinX, centerOfMass.Y - newCenterOfMass.Y),
-                    _ => throw new ArgumentOutOfRangeException()
-                };
+            var newCenterOfMass = FindCenterOfMass(boxes);
+            var translation = alignment switch
+            {
+                BoxAlignment.TOP_LEFT => new GridCoordinatePair(originalTotalMinX, originalTotalMinY),
+                BoxAlignment.TOP => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMinY),
+                BoxAlignment.TOP_RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMinY),
+                BoxAlignment.RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, centerOfMass.Y - newCenterOfMass.Y),
+                BoxAlignment.BOTTOM_RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.BOTTOM => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.BOTTOM_LEFT => new GridCoordinatePair(originalTotalMinX, originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.LEFT => new GridCoordinatePair(originalTotalMinX, centerOfMass.Y - newCenterOfMass.Y),
+                BoxAlignment.CENTER => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, centerOfMass.Y - newCenterOfMass.Y),
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-                foreach (var box in boxes)
-                {
-                    box.Translate(translation.X, translation.Y);
-                }
+            foreach (var box in boxes)
+            {
+                box.Translate(translation.X, translation.Y);
             }
         }
     }
