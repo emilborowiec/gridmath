@@ -38,5 +38,12 @@ namespace PonderingProgrammer.GridMath
 
             return listOfOverlapLists;
         }
+
+        public static GridCoordinatePair FindCenterOfMass(GridBoundingBox[] boxes)
+        {
+            var xCenter = GridIntervals.FindCenterOfMass(boxes.Select(b => b.XInterval).ToArray());
+            var yCenter = GridIntervals.FindCenterOfMass(boxes.Select(b => b.YInterval).ToArray());
+            return new GridCoordinatePair(xCenter, yCenter);
+        }
     }
 }

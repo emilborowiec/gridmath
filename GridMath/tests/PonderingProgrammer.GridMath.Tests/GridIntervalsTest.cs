@@ -53,5 +53,18 @@ namespace PonderingProgrammer.GridMath.Tests
 
             Assert.Equal(1, overlappingGroups.Count);
         }
+
+        [Fact]
+        public void TestFindCenterOfMass()
+        {
+            var i1 = new GridInterval(-2, -2);
+            var i2 = new GridInterval(-2, -2);
+            var i3 = new GridInterval(0, 0);
+            var i4 = new GridInterval(4, 4);
+
+            var center = GridIntervals.FindCenterOfMass(new[] {i1, i2, i3, i4});
+            
+            Assert.Equal(0, center);
+        }
     }
 }
