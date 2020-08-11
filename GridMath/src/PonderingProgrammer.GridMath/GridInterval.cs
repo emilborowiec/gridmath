@@ -79,6 +79,11 @@ namespace PonderingProgrammer.GridMath
             return Min < other.MaxExcl;
         }
 
+        public bool Touches(int coordinate)
+        {
+            return Min - 1 == coordinate || MaxExcl == coordinate;
+        }
+
         public bool Touches(GridInterval other)
         {
             return Min == other.MaxExcl || MaxExcl == other.Min;
@@ -152,49 +157,49 @@ namespace PonderingProgrammer.GridMath
         /// <summary>
         /// Measures how far is the interval to given point on the same axis.
         /// </summary>
-        /// <param name="value">a value on common axis with the interval</param>
+        /// <param name="coordinate">a coordinate to which we measure distance</param>
         /// <returns>Positive distance if the value is value is to the right of this interval.
         /// Negative distance if the value is to the left of this interval.
-        /// 0 if this interval contains value</returns>
-        public int Distance(int value)
+        /// 0 if this interval contains or touches the value</returns>
+        public int Distance(int coordinate)
         {
-            if (Contains(value)) return 0;
-            if (value > Max) return value - Max;
-            return value - Min;
+            if (Contains(coordinate) || Touches(coordinate)) return 0;
+            if (coordinate > MaxExcl) return coordinate - MaxExcl;
+            return coordinate - (Min - 1);
         }
         
         /// <summary>
         /// Measures how far is the interval to other interval on the same axis.
         /// </summary>
-        /// <param name="other">a GridInterval on the same axis</param>
-        /// <returns>0 if the intervals are overlapping.
+        /// <param name="other">another GridInterval to which we measure distance</param>
+        /// <returns>0 if the intervals are touching or overlapping.
         /// Positive distance if other is to the right.
         /// Negative distance if other is to the left.</returns>
         public int Distance(GridInterval other)
         {
-            if (Overlaps(other)) return 0;
+            if (Overlaps(other) || Touches(other)) return 0;
             return other.Min > Max ? Distance(other.Min) : Distance(other.Max);
         }
 
         /// <summary>
         /// Measures how deep is the value inside the interval.
         /// </summary>
-        /// <param name="value">a value on common axis with the interval</param>
+        /// <param name="coordinate">a coordinate to which we measure depth</param>
         /// <returns>0 if the value is outside of interval.
         /// Positive distance if shortest translation to avoid the value is to the right.
         /// Negative distance if shortest translation is to the left.</returns>
-        public int Depth(int value)
+        public int Depth(int coordinate)
         {
-            if (!Contains(value)) return 0;
-            var toRight = value - (Min - 1);
-            var toLeft = value - MaxExcl;
+            if (!Contains(coordinate)) return 0;
+            var toRight = coordinate - (Min - 1);
+            var toLeft = coordinate - MaxExcl;
             return Math.Abs(toRight) <= Math.Abs(toLeft) ? toRight : toLeft;
         }
 
         /// <summary>
         /// Measures how deep is the interval overlapped with other interval on the same axis.
         /// </summary>
-        /// <param name="other">a GridInterval on the same axis</param>
+        /// <param name="other">another GridInterval to which we measure depth</param>
         /// <returns>0 if the intervals are not overlapping.
         /// Positive distance if shortest translation to separate is to the right.
         /// Negative distance if shortest translation is to the left.</returns>
