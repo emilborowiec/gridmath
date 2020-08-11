@@ -87,13 +87,13 @@ namespace PonderingProgrammer.GridMath
                     // alternate horizontal and vertical possibilities
                     if (i % 2 == 0)
                     {
-                        possibilities.Add(new GridCoordinatePair(box.MaxXExcl + spacing, box.MinY + spacing));
-                        possibilities.Add(new GridCoordinatePair(box.MinX + spacing, box.MaxYExcl + spacing));
+                        possibilities.Add(new GridCoordinatePair(box.MaxXExcl + spacing, box.MinY));
+                        possibilities.Add(new GridCoordinatePair(box.MinX, box.MaxYExcl + spacing));
                     }
                     else
                     {
-                        possibilities.Add(new GridCoordinatePair(box.MinX + spacing, box.MaxYExcl + spacing));
-                        possibilities.Add(new GridCoordinatePair(box.MaxXExcl + spacing, box.MinY + spacing));
+                        possibilities.Add(new GridCoordinatePair(box.MinX, box.MaxYExcl + spacing));
+                        possibilities.Add(new GridCoordinatePair(box.MaxXExcl + spacing, box.MinY));
                     }
                     if (newTotalMaxX < boxes[i].MaxX) newTotalMaxX = boxes[i].MaxX;
                     if (newTotalMaxY < boxes[i].MaxY) newTotalMaxY = boxes[i].MaxY;
