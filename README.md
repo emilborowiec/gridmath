@@ -44,22 +44,44 @@ Here are some of the method offered by `GridInterval`:
 
 **Contains**
 
+TODO: write about it
+
 **Overlaps**
+
+TODO: write about it
 
 **Touches**
 
+TODO: write about it
+
 **Translate**
+
+TODO: write about it
 
 **Relate**
 
+TODO: write about it
+
 **Multiply**
 
+TODO: write about it
+
 **Distance**
+
+TODO: write about it
 
 **Depth**
 
 There is also a utility class `GridIntervals` for more complex operations on intervals.
 Some of the supported operations include:
+
+**Finding subsets of overlapping intervals in collection**
+
+TODO: write about it
+
+**Packing intervals**
+
+TODO: write about it
 
 ## 2D Grid Coordinates
 
@@ -70,4 +92,12 @@ Not very exciting but it also supports measuring Manhattan and Chebyshev distanc
 
 `GridBoudningBox` is our two-dimensional workhorse and corresponding 
 `GridBoundingBoxes` utility class supports complex operations on collections of boxes.
+
+**Finding subset of overlapping boxes in collection**
+
+TODO: write about it
+
+**Packing boxes**
+
+TODO: write about it
 
