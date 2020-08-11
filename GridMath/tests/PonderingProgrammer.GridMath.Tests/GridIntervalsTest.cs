@@ -41,5 +41,17 @@ namespace PonderingProgrammer.GridMath.Tests
             Assert.Equal(2, overlappingGroups[2].Count);
             Assert.False(overlappingGroups.SelectMany(g => g).Any(index => index == 5));
         }
+        
+        [Fact]
+        public void FindOverlappingIntervalsTest2()
+        {
+            var i1 = new GridInterval(1, 3);
+            var i2 = new GridInterval(3, 5);
+            var i3 = new GridInterval(1, 4);
+
+            var overlappingGroups = GridIntervals.FindOverlappingIntervals(new [] {i1, i2, i3});
+
+            Assert.Equal(1, overlappingGroups.Count);
+        }
     }
 }

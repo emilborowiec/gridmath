@@ -6,9 +6,9 @@ namespace PonderingProgrammer.GridMath
     /// <summary>
     /// Utility class for operations on collections of GriBoundingBoxes
     /// </summary>
-    public static class GridBoundignBoxes
+    public static class GridBoundingBoxes
     {
-        public static List<List<int>> FindFirstOverlappingGroup(GridBoundingBox[] boxes)
+        public static List<List<int>> FindOverlappingBoxes(GridBoundingBox[] boxes)
         {
             var listOfOverlapLists = new List<List<int>>();
             

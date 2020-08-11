@@ -33,9 +33,9 @@ namespace PonderingProgrammer.GridMath
             
             List<int> currentOverlapList = null;
 
-            while (startsIndex < sortedStarts.Length && endsIndex < sortedEnds.Length)
+            while (endsIndex < sortedEnds.Length)
             {
-                if (sortedStarts[startsIndex].Min < sortedEnds[endsIndex].MaxExcl)
+                if (startsIndex < sortedStarts.Length && sortedStarts[startsIndex].Min < sortedEnds[endsIndex].MaxExcl)
                 {
                     if (currentOverlapList == null) currentOverlapList = new List<int>();
                     currentOverlapList.Add(sortedStarts[startsIndex].index);
@@ -48,10 +48,10 @@ namespace PonderingProgrammer.GridMath
                         if (!listOfOverlappingLists.Any(list => list.Intersect(currentOverlapList).Count() == currentOverlapList.Count))
                         {
                             listOfOverlappingLists.Add(currentOverlapList);
+                            currentOverlapList = new List<int>(currentOverlapList);
                         }
-                        currentOverlapList = new List<int>(currentOverlapList);
-                        currentOverlapList.Remove(sortedEnds[endsIndex].index);
                     }
+                    currentOverlapList.Remove(sortedEnds[endsIndex].index);
                     endsIndex++;
                 }
             }
