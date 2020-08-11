@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace PonderingProgrammer.GridMath
@@ -79,6 +81,42 @@ namespace PonderingProgrammer.GridMath
             }
 
             return weightDict.Sum(pair => pair.Key * pair.Value) / positionSum;
+        }
+
+        public static void Pack(GridInterval[] intervals, IntervalAnchor alignment = IntervalAnchor.Center, int spacing = 0)
+        {
+            var originalTotalMin = int.MaxValue;
+            var originalTotalMax = int.MinValue;
+            var centerOfMass = FindCenterOfMass(intervals);
+            var nextMin = 0;
+            var translation = 0;
+            for (var i = 0; i < intervals.Length; i++)
+            {
+                if (originalTotalMin > intervals[i].Min)
+                {
+                    originalTotalMin = intervals[i].Min;
+                }
+
+                if (originalTotalMax < intervals[i].Max)
+                {
+                    originalTotalMax = intervals[i].Max;
+                }
+                intervals[i] = intervals[i].SetMin(nextMin);
+                nextMin = intervals[i].MaxExcl + spacing;
+            }
+
+            translation = alignment switch
+            {
+                IntervalAnchor.Start => originalTotalMin,
+                IntervalAnchor.End => originalTotalMax - intervals[^1].Max,
+                IntervalAnchor.Center => centerOfMass - FindCenterOfMass(intervals),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            foreach (var interval in intervals)
+            {
+                interval.Translate(translation);
+            }
         }
     }
 }
