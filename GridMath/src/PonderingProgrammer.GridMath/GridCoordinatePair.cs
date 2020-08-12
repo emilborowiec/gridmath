@@ -42,5 +42,15 @@ namespace PonderingProgrammer.GridMath
         {
             return Math.Max(Math.Abs(x - X), Math.Abs(y - Y));
         }
+
+        public double EuclideanDistance(int x, int y)
+        {
+            return Math.Sqrt(Math.Pow(x - X, 2) + Math.Pow(y - Y, 2));
+        }
+
+        public GridCoordinatePair Translation(int x, int y)
+        {
+            return new GridCoordinatePair(X + x, Y + y);
+        }
     }
 }

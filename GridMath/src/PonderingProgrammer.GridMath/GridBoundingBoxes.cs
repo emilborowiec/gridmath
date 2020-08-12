@@ -118,7 +118,7 @@ namespace PonderingProgrammer.GridMath
 
             foreach (var box in boxes)
             {
-                box.Translate(translation.X, translation.Y);
+                box.Translation(translation.X, translation.Y);
             }
         }
     }

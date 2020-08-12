@@ -16,7 +16,7 @@ namespace PonderingProgrammer.GridMath
             if (depth == 0) return new[] {i1, i2};
             var t1 = RealToGrid.ToGrid(depth / 2.0);
             var t2 = (depth % 2 == 0) ? -t1 : RealToGrid.ToGrid(-(depth + 1) / 2.0);
-            return new[] {i1.Translate(t1), i2.Translate(t2)};
+            return new[] {i1.Translation(t1), i2.Translation(t2)};
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace PonderingProgrammer.GridMath
 
             foreach (var interval in intervals)
             {
-                interval.Translate(translation);
+                interval.Translation(translation);
             }
         }
     }

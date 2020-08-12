@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace PonderingProgrammer.GridMath.Tests
 {
@@ -41,15 +42,27 @@ namespace PonderingProgrammer.GridMath.Tests
         }
 
         [Theory]
-        [InlineData(3, 0, 3)]
-        [InlineData(0, 3, 3)]
-        [InlineData(3, 3, 3)]
-        [InlineData(2, 1, 2)]
-        [InlineData(-1, -1, 1)]
-        public void TestChebyshevDistance(int x, int y, int expected)
+        [InlineData(3, 0, 3.0)]
+        [InlineData(0, 3, 3.0)]
+        [InlineData(3, 3, 4.243)]
+        [InlineData(2, 1, 2.236)]
+        [InlineData(-1, -1, 1.414)]
+        public void TestEuclideanDistance(int x, int y, double expected)
         {
             var c = new GridCoordinatePair(0, 0);
-            Assert.Equal(expected, c.ChebyshevDistance(x, y));
+            Assert.Equal(expected, c.EuclideanDistance(x, y), 3);
+        }
+
+        [Theory]
+        [InlineData(1, 0)]
+        [InlineData(1, 1)]
+        [InlineData(-11, 1)]
+        public void TestTranslation(int x, int y)
+        {
+            var c = new GridCoordinatePair(10, 10);
+            var c2 = c.Translation(x, y);
+            Assert.Equal(10 + x, c2.X);
+            Assert.Equal(10 + y, c2.Y);
         }
     }
 }

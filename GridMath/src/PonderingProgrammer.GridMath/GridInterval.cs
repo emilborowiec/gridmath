@@ -98,7 +98,7 @@ namespace PonderingProgrammer.GridMath
             return new[] { FromExclusiveMax(Min, Min + halfLength), FromExclusiveMax(Min + halfLength, MaxExcl)};
         }
 
-        public GridInterval Translate(int value)
+        public GridInterval Translation(int value)
         {
             return new GridInterval(Min + value, Max + value);
         }
@@ -146,7 +146,7 @@ namespace PonderingProgrammer.GridMath
         /// <param name="value">multiplier of Length</param>
         /// <returns>GridInterval with same Min and multiplied Length mapped to grid space.
         /// Returns null if resulting length is 0 or negative.</returns>
-        public GridInterval? Multiply(double value)
+        public GridInterval? Multiplication(double value)
         {
             var realLength = value * Length;
             if (realLength < 1.0)

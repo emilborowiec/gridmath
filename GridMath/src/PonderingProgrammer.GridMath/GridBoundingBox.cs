@@ -89,9 +89,9 @@ namespace PonderingProgrammer.GridMath
                    || (YInterval.Touches(other.YInterval) && XInterval.Overlaps(other.XInterval));
         }
 
-        public GridBoundingBox Translate(int x, int y)
+        public GridBoundingBox Translation(int x, int y)
         {
-            return new GridBoundingBox(XInterval.Translate(x), YInterval.Translate(y));
+            return new GridBoundingBox(XInterval.Translation(x), YInterval.Translation(y));
         }
 
         public GridBoundingBox SetPosition(int x, int y, IntervalAnchor xAnchor, IntervalAnchor yAnchor, int xOffset = 0,

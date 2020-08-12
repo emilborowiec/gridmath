@@ -114,7 +114,7 @@ namespace PonderingProgrammer.GridMath.Tests
         public void TestTranslate()
         {
             var interval = GridInterval.FromExclusiveMax(0, 2);
-            var translated = interval.Translate(5);
+            var translated = interval.Translation(5);
             Assert.Equal(5, translated.Min);
             Assert.Equal(7, translated.MaxExcl);
         }
@@ -183,7 +183,7 @@ namespace PonderingProgrammer.GridMath.Tests
         public void TestMultiplication(int min, int maxExcl, double multiplier, int? expectedMax)
         {
             var interval = GridInterval.FromExclusiveMax(min, maxExcl);
-            var result = interval.Multiply(multiplier);
+            var result = interval.Multiplication(multiplier);
             Assert.Equal(expectedMax, result?.MaxExcl);
         }
 
