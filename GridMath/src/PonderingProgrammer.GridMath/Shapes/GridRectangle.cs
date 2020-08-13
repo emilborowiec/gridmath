@@ -10,7 +10,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             BoundingBox = boundingBox;
         }
 
-        public GridBoundingBox BoundingBox
+        public new GridBoundingBox BoundingBox
         {
             get => _boundingBox;
             set
