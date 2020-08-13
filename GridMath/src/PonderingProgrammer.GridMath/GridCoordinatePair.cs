@@ -47,7 +47,7 @@ namespace PonderingProgrammer.GridMath
         {
             return Math.Sqrt(Math.Pow(x - X, 2) + Math.Pow(y - Y, 2));
         }
-
+        
         public GridCoordinatePair Translation(int x, int y)
         {
             return new GridCoordinatePair(X + x, Y + y);

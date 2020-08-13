@@ -2,8 +2,7 @@
 {
     public enum Grid4Rotation
     {
-        NinetyCw,
-        OneEighty,
-        NinetyCcw
+        Ccw90,
+        Cw90
     }
 }

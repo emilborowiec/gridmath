@@ -68,7 +68,7 @@ namespace PonderingProgrammer.GridMath
 
         public static Grid4Direction Rotate(Grid4Direction direction, Grid4Rotation rotation)
         {
-            var rotAngle = RotationToAngle(rotation);
+            var rotAngle = Grid4RotationToAngle(rotation);
             var newAngle = DirectionToAngle(direction) + rotAngle;
             if (newAngle < 0) newAngle += TwoPi;
             if (newAngle > TwoPi) newAngle -= TwoPi;
@@ -77,20 +77,19 @@ namespace PonderingProgrammer.GridMath
 
         public static Grid8Direction Rotate(Grid8Direction direction, Grid4Rotation rotation)
         {
-            var rotAngle = RotationToAngle(rotation);
+            var rotAngle = Grid4RotationToAngle(rotation);
             var newAngle = DirectionToAngle(direction) + rotAngle;
             if (newAngle < 0) newAngle += TwoPi;
             if (newAngle > TwoPi) newAngle -= TwoPi;
             return AngleToDirection8(newAngle);
         }
 
-        public static double RotationToAngle(Grid4Rotation rotation)
+        public static double Grid4RotationToAngle(Grid4Rotation rotation)
         {
             var rotAngle = rotation switch
             {
-                Grid4Rotation.NinetyCcw => Top,
-                Grid4Rotation.OneEighty => Left,
-                Grid4Rotation.NinetyCw => Bottom,
+                Grid4Rotation.Ccw90 => Top,
+                Grid4Rotation.Cw90 => Bottom,
                 _ => 0
             };
             return rotAngle;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
@@ -26,10 +27,18 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         public override void Rotate(Grid4Rotation rotation)
         {
-            if (rotation == Grid4Rotation.NinetyCcw || rotation == Grid4Rotation.NinetyCw)
+            var topRight = GridPolarCoordinates.FromGridCartesian(BoundingBox.TopRight.Translation(-BoundingBox.Center.X, -BoundingBox.Center.Y));
+            var bottomLeft = GridPolarCoordinates.FromGridCartesian(BoundingBox.BottomLeft.Translation(-BoundingBox.Center.X, -BoundingBox.Center.Y));
+            var rotatedTopRight = topRight.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
+            var rotatedBottomLeft = bottomLeft.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
+            BoundingBox = rotation switch
             {
-                BoundingBox = GridBoundingBox.FromSize(BoundingBox.MinX, BoundingBox.MinY, BoundingBox.Height,BoundingBox.Width);
-            }
+                Grid4Rotation.Ccw90 => GridBoundingBox.FromMinMax(rotatedTopRight.Translation(BoundingBox.Center.X, BoundingBox.Center.Y), 
+                    rotatedBottomLeft.Translation(BoundingBox.Center.X, BoundingBox.Center.Y)),
+                Grid4Rotation.Cw90 => GridBoundingBox.FromMinMax(rotatedBottomLeft.Translation(BoundingBox.Center.X, BoundingBox.Center.Y), 
+                    rotatedTopRight.Translation(BoundingBox.Center.X, BoundingBox.Center.Y)),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         public override void Flip(GridAxis axis)

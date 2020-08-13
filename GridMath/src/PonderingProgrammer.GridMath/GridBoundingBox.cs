@@ -19,6 +19,11 @@ namespace PonderingProgrammer.GridMath
         public readonly GridCoordinatePair BottomRight;
         public readonly GridCoordinatePair BottomLeft;
 
+        public static GridBoundingBox FromMinMax(GridCoordinatePair topLeft, GridCoordinatePair bottomRight)
+        {
+            return FromMinMax(topLeft.X, topLeft.Y, bottomRight.X, bottomRight.Y);
+        }
+        
         public static GridBoundingBox FromMinMax(int minX, int minY, int maxX, int maxY)
         {
             if (minX > maxX || minY > maxY) throw new ArgumentException($"min cannot be greater than max");
@@ -49,9 +54,9 @@ namespace PonderingProgrammer.GridMath
             XInterval = xInterval;
             YInterval = yInterval;
             TopLeft = new GridCoordinatePair(XInterval.Min, YInterval.Min);
-            TopRight = new GridCoordinatePair(XInterval.MaxExcl - 1, YInterval.Min);
-            BottomRight = new GridCoordinatePair(XInterval.MaxExcl - 1, YInterval.MaxExcl - 1);
-            BottomLeft = new GridCoordinatePair(XInterval.Min, YInterval.MaxExcl - 1);
+            TopRight = new GridCoordinatePair(XInterval.Max, YInterval.Min);
+            BottomRight = new GridCoordinatePair(XInterval.Max, YInterval.Max);
+            BottomLeft = new GridCoordinatePair(XInterval.Min, YInterval.Max);
         }
 
         public int MinX => XInterval.Min;
@@ -62,6 +67,7 @@ namespace PonderingProgrammer.GridMath
         public int Height => YInterval.Length;
         public int MaxXExcl => XInterval.MaxExcl;
         public int MaxYExcl => YInterval.MaxExcl;
+        public GridCoordinatePair Center => new GridCoordinatePair(XInterval.Center, YInterval.Center);
 
         public bool Contains(int x, int y)
         {
