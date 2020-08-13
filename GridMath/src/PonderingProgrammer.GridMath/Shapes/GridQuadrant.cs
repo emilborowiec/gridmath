@@ -5,16 +5,16 @@ namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridQuadrant : AbstractGridShape
     {
-        private GridCoordinatePair _center;
+        private GridCoordinatePair _origin;
         private int _radius;
         private Grid8Direction _direction;
 
-        public GridCoordinatePair Center
+        public GridCoordinatePair Origin
         {
-            get => _center;
+            get => _origin;
             set
             {
-                _center = value;
+                _origin = value;
                 UpdateBoundsAndContainedCoords();
             }
         }
@@ -29,9 +29,9 @@ namespace PonderingProgrammer.GridMath.Shapes
             }
         }
 
-        public GridQuadrant(GridCoordinatePair center, int radius, Grid8Direction direction)
+        public GridQuadrant(GridCoordinatePair origin, int radius, Grid8Direction direction)
         {
-            _center = center;
+            _origin = origin;
             _radius = radius;
             _direction = direction;
             UpdateBoundsAndContainedCoords();
@@ -39,7 +39,7 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         public override void Translate(int x, int y)
         {
-            Center = _center.Translation(x, y);
+            Origin = _origin.Translation(x, y);
         }
 
         public override void Rotate(Grid4Rotation rotation)
@@ -54,8 +54,8 @@ namespace PonderingProgrammer.GridMath.Shapes
         
         protected sealed override void UpdateBoundsAndContainedCoords()
         {
-            _boundingBox = GridBoundingBox.FromMinMax(_center.X - _radius, _center.Y - _radius, _center.X + _radius,
-                _center.Y + _radius);
+            _boundingBox = GridBoundingBox.FromMinMax(_origin.X - _radius, _origin.Y - _radius, _origin.X + _radius,
+                _origin.Y + _radius);
             _containedCoordinates = new List<GridCoordinatePair>();
 
             GridPolarCoordinates start;
@@ -102,9 +102,9 @@ namespace PonderingProgrammer.GridMath.Shapes
             {
                 for (var x = BoundingBox.MinX; x < BoundingBox.MaxXExcl; x++)
                 {
-                    if (_center.EuclideanDistance(x, y) > _radius) continue;
+                    if (_origin.EuclideanDistance(x, y) > _radius) continue;
 
-                    var polar = GridPolarCoordinates.FromGridCartesian(x - _center.X, y - _center.Y);
+                    var polar = GridPolarCoordinates.FromGridCartesian(x - _origin.X, y - _origin.Y);
 
                     if (end.Theta > start.Theta)
                     {
