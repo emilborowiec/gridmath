@@ -4,7 +4,7 @@ namespace PonderingProgrammer.GridMath.Shapes
 {
     public interface IGridShape
     {
-        List<GridCoordinatePair> ContainedCoordinates { get; }
+        IReadOnlyList<GridCoordinatePair> Coordinates { get; }
         GridBoundingBox BoundingBox { get; }
         bool Overlaps(GridBoundingBox boundingBox);
         void Translate(int x, int y);

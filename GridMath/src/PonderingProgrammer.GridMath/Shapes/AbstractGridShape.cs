@@ -5,21 +5,21 @@ namespace PonderingProgrammer.GridMath.Shapes
 {
     public abstract class AbstractGridShape : IGridShape
     {
-        protected GridBoundingBox _boundingBox;
-        protected List<GridCoordinatePair> _containedCoordinates;
+        protected GridBoundingBox BBox { get; set; }
+        protected List<GridCoordinatePair> Coords { get; set; }
 
-        public GridBoundingBox BoundingBox => _boundingBox;
-        public List<GridCoordinatePair> ContainedCoordinates => _containedCoordinates;
+        public IReadOnlyList<GridCoordinatePair> Coordinates => Coords.AsReadOnly();
+        public GridBoundingBox BoundingBox => BBox;
 
         public virtual bool Overlaps(GridBoundingBox boundingBox)
         {
-            return _containedCoordinates.Any(coords => boundingBox.Contains(coords));
+            return BBox.Overlaps(boundingBox) && Coords.Any(boundingBox.Contains);
         }
 
         public abstract void Translate(int x, int y);
         public abstract void Rotate(Grid4Rotation rotation);
         public abstract void Flip(GridAxis axis);
         
-        protected abstract void UpdateBoundsAndContainedCoords();
+        protected abstract void Update();
     }
 }

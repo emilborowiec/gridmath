@@ -7,13 +7,20 @@ namespace PonderingProgrammer.GridMath.Shapes
         private GridCoordinatePair _center;
         private int _radius;
 
+        public GridCircle(GridCoordinatePair center, int radius)
+        {
+            _center = center;
+            _radius = radius;
+            Update();
+        }
+
         public GridCoordinatePair Center
         {
             get => _center;
             set
             {
                 _center = value;
-                UpdateBoundsAndContainedCoords();
+                Update();
             }
         }
 
@@ -23,15 +30,8 @@ namespace PonderingProgrammer.GridMath.Shapes
             set
             {
                 _radius = value;
-                UpdateBoundsAndContainedCoords();
+                Update();
             }
-        }
-
-        public GridCircle(GridCoordinatePair center, int radius)
-        {
-            _center = center;
-            _radius = radius;
-            UpdateBoundsAndContainedCoords();
         }
 
         public override void Translate(int x, int y)
@@ -48,17 +48,17 @@ namespace PonderingProgrammer.GridMath.Shapes
         {
             // Done
         }
-        
-        protected sealed override void UpdateBoundsAndContainedCoords()
+
+        protected sealed override void Update()
         {
-            _boundingBox = GridBoundingBox.FromMinMax(_center.X - _radius, _center.Y - _radius, _center.X + _radius,
+            BBox = GridBoundingBox.FromMinMax(_center.X - _radius, _center.Y - _radius, _center.X + _radius,
                 _center.Y + _radius);
-            _containedCoordinates = new List<GridCoordinatePair>();
+            Coords = new List<GridCoordinatePair>();
             for (var y = BoundingBox.MinY; y < BoundingBox.MaxYExcl; y++)
             {
                 for (var x = BoundingBox.MinX; x < BoundingBox.MaxXExcl; x++)
                 {
-                    if (_center.EuclideanDistance(x, y) <= _radius) _containedCoordinates.Add(new GridCoordinatePair(x, y));
+                    if (_center.EuclideanDistance(x, y) <= _radius) Coords.Add(new GridCoordinatePair(x, y));
                 }
             }
         }

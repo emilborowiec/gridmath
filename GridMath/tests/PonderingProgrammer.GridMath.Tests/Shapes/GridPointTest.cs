@@ -14,8 +14,8 @@ namespace PonderingProgrammer.GridMath.Tests.Shapes
             Assert.Equal(2, point.BoundingBox.MaxX);
             Assert.Equal(5, point.BoundingBox.MinY);
             Assert.Equal(5, point.BoundingBox.MaxY);
-            Assert.Equal(5, point.ContainedCoordinates[0].Y);
-            Assert.Equal(point.Coordinates, point.ContainedCoordinates[0]);
+            Assert.Equal(5, ((AbstractGridShape) point).Coordinates[0].Y);
+            Assert.Equal(point.Position, ((AbstractGridShape) point).Coordinates[0]);
         }
     }
 }

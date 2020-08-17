@@ -37,7 +37,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             throw new System.NotImplementedException();
         }
 
-        protected override void UpdateBoundsAndContainedCoords()
+        protected override void Update()
         {
             throw new System.NotImplementedException();
         }

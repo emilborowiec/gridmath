@@ -4,32 +4,26 @@ namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridPoint : AbstractGridShape
     {
-        private GridCoordinatePair _coordinates;
+        private GridCoordinatePair _position;
 
-        public GridPoint(GridCoordinatePair coordinates)
+        public GridPoint(GridCoordinatePair position)
         {
-            Coordinates = coordinates;
+            Position = position;
         }
 
-        public GridCoordinatePair Coordinates
+        public GridCoordinatePair Position
         {
-            get => _coordinates;
+            get => _position;
             set
             {
-                _coordinates = value;
-                UpdateBoundsAndContainedCoords();
+                _position = value;
+                Update();
             }
-        }
-
-        protected override void UpdateBoundsAndContainedCoords()
-        {
-            _boundingBox = GridBoundingBox.FromMinMax(Coordinates.X, Coordinates.Y, Coordinates.X, Coordinates.Y);
-            _containedCoordinates = new List<GridCoordinatePair> {Coordinates};
         }
 
         public override void Translate(int x, int y)
         {
-            Coordinates = Coordinates.Translation(x, y);
+            Position = Position.Translation(x, y);
         }
 
         public override void Rotate(Grid4Rotation rotation)
@@ -40,6 +34,12 @@ namespace PonderingProgrammer.GridMath.Shapes
         public override void Flip(GridAxis axis)
         {
             // Done. Best code ever.
+        }
+
+        protected override void Update()
+        {
+            Coords = new List<GridCoordinatePair> {Position};
+            BBox = GridBoundingBox.FromMinMax(Position.X, Position.Y, Position.X, Position.Y);
         }
     }
 }

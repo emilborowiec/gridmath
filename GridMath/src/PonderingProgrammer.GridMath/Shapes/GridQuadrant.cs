@@ -15,7 +15,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             set
             {
                 _origin = value;
-                UpdateBoundsAndContainedCoords();
+                Update();
             }
         }
 
@@ -25,7 +25,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             set
             {
                 _radius = value;
-                UpdateBoundsAndContainedCoords();
+                Update();
             }
         }
 
@@ -34,7 +34,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             _origin = origin;
             _radius = radius;
             _direction = direction;
-            UpdateBoundsAndContainedCoords();
+            Update();
         }
 
         public override void Translate(int x, int y)
@@ -52,11 +52,11 @@ namespace PonderingProgrammer.GridMath.Shapes
             throw new System.NotImplementedException();
         }
         
-        protected sealed override void UpdateBoundsAndContainedCoords()
+        protected sealed override void Update()
         {
-            _boundingBox = GridBoundingBox.FromMinMax(_origin.X - _radius, _origin.Y - _radius, _origin.X + _radius,
+            BBox = GridBoundingBox.FromMinMax(_origin.X - _radius, _origin.Y - _radius, _origin.X + _radius,
                 _origin.Y + _radius);
-            _containedCoordinates = new List<GridCoordinatePair>();
+            Coords = new List<GridCoordinatePair>();
 
             GridPolarCoordinates start;
             GridPolarCoordinates end;
@@ -115,7 +115,7 @@ namespace PonderingProgrammer.GridMath.Shapes
                         if (polar.Theta < start.Theta && polar.Theta > end.Theta) continue;
                     }
                     
-                    _containedCoordinates.Add(new GridCoordinatePair(x, y));
+                    Coords.Add(new GridCoordinatePair(x, y));
                 }
             }
         }

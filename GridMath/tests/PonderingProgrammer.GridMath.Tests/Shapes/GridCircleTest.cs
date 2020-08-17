@@ -9,15 +9,15 @@ namespace PonderingProgrammer.GridMath.Tests.Shapes
         public void TestUpdatingCircleCoordinates()
         {
             var c = new GridCircle(new GridCoordinatePair(0, 0), 0);
-            Assert.Single(c.ContainedCoordinates);
-            Assert.Equal(0, c.ContainedCoordinates[0].X);
-            Assert.Equal(0, c.ContainedCoordinates[0].Y);
+            Assert.Single(c.Coordinates);
+            Assert.Equal(0, c.Coordinates[0].X);
+            Assert.Equal(0, c.Coordinates[0].Y);
             c.Radius = 2;
-            Assert.Equal(13, c.ContainedCoordinates.Count);
+            Assert.Equal(13, c.Coordinates.Count);
             c.Radius = 3;
-            Assert.Equal(29, c.ContainedCoordinates.Count);
+            Assert.Equal(29, c.Coordinates.Count);
             c.Radius = 4;
-            Assert.Equal(49, c.ContainedCoordinates.Count);
+            Assert.Equal(49, c.Coordinates.Count);
         }
     }
 }

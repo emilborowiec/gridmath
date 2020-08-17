@@ -5,43 +5,43 @@ namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridRectangle : AbstractGridShape
     {
-        public GridRectangle(GridBoundingBox boundingBox)
+        public GridRectangle(GridBoundingBox rectangle)
         {
-            BoundingBox = boundingBox;
+            Rectangle = rectangle;
         }
 
-        public new GridBoundingBox BoundingBox
+        public GridBoundingBox Rectangle
         {
-            get => _boundingBox;
+            get => BBox;
             set
             {
-                _boundingBox = value;
-                UpdateBoundsAndContainedCoords();
+                BBox = value;
+                Update();
             }
         }
 
         public override bool Overlaps(GridBoundingBox boundingBox)
         {
-            return _boundingBox.Overlaps(boundingBox);
+            return Rectangle.Overlaps(boundingBox);
         }
 
         public override void Translate(int x, int y)
         {
-            BoundingBox = BoundingBox.Translation(x, y);
+            Rectangle = Rectangle.Translation(x, y);
         }
 
         public override void Rotate(Grid4Rotation rotation)
         {
-            var topRight = GridPolarCoordinates.FromGridCartesian(BoundingBox.TopRight.Translation(-BoundingBox.Center.X, -BoundingBox.Center.Y));
-            var bottomLeft = GridPolarCoordinates.FromGridCartesian(BoundingBox.BottomLeft.Translation(-BoundingBox.Center.X, -BoundingBox.Center.Y));
+            var topRight = GridPolarCoordinates.FromGridCartesian(Rectangle.TopRight.Translation(-Rectangle.Center.X, -Rectangle.Center.Y));
+            var bottomLeft = GridPolarCoordinates.FromGridCartesian(Rectangle.BottomLeft.Translation(-Rectangle.Center.X, -Rectangle.Center.Y));
             var rotatedTopRight = topRight.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
             var rotatedBottomLeft = bottomLeft.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
-            BoundingBox = rotation switch
+            Rectangle = rotation switch
             {
-                Grid4Rotation.Ccw90 => GridBoundingBox.FromMinMax(rotatedTopRight.Translation(BoundingBox.Center.X, BoundingBox.Center.Y), 
-                    rotatedBottomLeft.Translation(BoundingBox.Center.X, BoundingBox.Center.Y)),
-                Grid4Rotation.Cw90 => GridBoundingBox.FromMinMax(rotatedBottomLeft.Translation(BoundingBox.Center.X, BoundingBox.Center.Y), 
-                    rotatedTopRight.Translation(BoundingBox.Center.X, BoundingBox.Center.Y)),
+                Grid4Rotation.Ccw90 => GridBoundingBox.FromMinMax(rotatedTopRight.Translation(Rectangle.Center.X, Rectangle.Center.Y), 
+                    rotatedBottomLeft.Translation(Rectangle.Center.X, Rectangle.Center.Y)),
+                Grid4Rotation.Cw90 => GridBoundingBox.FromMinMax(rotatedBottomLeft.Translation(Rectangle.Center.X, Rectangle.Center.Y), 
+                    rotatedTopRight.Translation(Rectangle.Center.X, Rectangle.Center.Y)),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -51,14 +51,14 @@ namespace PonderingProgrammer.GridMath.Shapes
             // Done
         }
 
-        protected override void UpdateBoundsAndContainedCoords()
+        protected override void Update()
         {
-            _containedCoordinates = new List<GridCoordinatePair>();
-            for (var y = BoundingBox.MinY; y < BoundingBox.MaxYExcl; y++)
+            Coords = new List<GridCoordinatePair>();
+            for (var y = Rectangle.MinY; y < Rectangle.MaxYExcl; y++)
             {
-                for (var x = BoundingBox.MinX; x < BoundingBox.MaxXExcl; x++)
+                for (var x = Rectangle.MinX; x < Rectangle.MaxXExcl; x++)
                 {
-                    _containedCoordinates.Add(new GridCoordinatePair(x, y));
+                    Coords.Add(new GridCoordinatePair(x, y));
                 }
             }
         }
