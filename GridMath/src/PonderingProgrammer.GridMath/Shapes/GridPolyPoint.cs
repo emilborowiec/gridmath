@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
-    public class GridPointCollection : AbstractGridShape
+    public class GridPolyPoint : AbstractGridShape
     {
-        public GridPointCollection(IEnumerable<GridCoordinatePair> coordinates)
+        public GridPolyPoint(IEnumerable<GridCoordinatePair> coordinates)
         {
             Coords = new List<GridCoordinatePair>(coordinates);
             Update();
