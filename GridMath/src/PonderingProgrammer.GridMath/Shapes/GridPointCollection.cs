@@ -43,10 +43,10 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         protected override void Update()
         {
-            var minX = Int32.MaxValue;
-            var minY = Int32.MaxValue;
-            var maxX = Int32.MinValue;
-            var maxY = Int32.MinValue;
+            var minX = int.MaxValue;
+            var minY = int.MaxValue;
+            var maxX = int.MinValue;
+            var maxY = int.MinValue;
             foreach (var coords in Coordinates)
             {
                 if (coords.X > maxX) maxX = coords.X;
