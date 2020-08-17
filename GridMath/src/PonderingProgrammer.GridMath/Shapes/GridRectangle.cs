@@ -20,6 +20,11 @@ namespace PonderingProgrammer.GridMath.Shapes
             }
         }
 
+        public override bool Overlaps(GridBoundingBox boundingBox)
+        {
+            return _boundingBox.Overlaps(boundingBox);
+        }
+
         public override void Translate(int x, int y)
         {
             BoundingBox = BoundingBox.Translation(x, y);

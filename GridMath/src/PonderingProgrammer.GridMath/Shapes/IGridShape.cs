@@ -6,6 +6,7 @@ namespace PonderingProgrammer.GridMath.Shapes
     {
         List<GridCoordinatePair> ContainedCoordinates { get; }
         GridBoundingBox BoundingBox { get; }
+        bool Overlaps(GridBoundingBox boundingBox);
         void Translate(int x, int y);
         void Rotate(Grid4Rotation rotation);
         void Flip(GridAxis axis);
