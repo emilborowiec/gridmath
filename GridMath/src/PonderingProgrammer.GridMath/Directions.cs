@@ -1,19 +1,23 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath
 {
     public static class Directions
     {
         private const double TwoPi = Math.PI * 2;
-        public static readonly double Top = Math.PI / 2;
-        public static readonly double Right = 0;
-        public static readonly double Bottom = Math.PI * 1.5;
-        public static readonly double Left = Math.PI;
-        public static readonly double TopLeft = Math.PI * 0.75;
-        public static readonly double TopRight = Math.PI * 0.25;
-        public static readonly double BottomRight = Math.PI * 1.75;
-        public static readonly double BottomLeft = Math.PI * 1.25;
-        
+        private const double Top = Math.PI / 2;
+        private const double Right = 0;
+        private const double Bottom = Math.PI * 1.5;
+        private const double Left = Math.PI;
+        private const double TopLeft = Math.PI * 0.75;
+        private const double TopRight = Math.PI * 0.25;
+        private const double BottomRight = Math.PI * 1.75;
+        private const double BottomLeft = Math.PI * 1.25;
+
         public static double DirectionToAngle(Grid4Direction direction)
         {
             return direction switch
@@ -22,10 +26,10 @@ namespace PonderingProgrammer.GridMath
                 Grid4Direction.Right => Right,
                 Grid4Direction.Bottom => Bottom,
                 Grid4Direction.Left => Left,
-                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null),
             };
         }
-        
+
         public static double DirectionToAngle(Grid8Direction direction)
         {
             return direction switch
@@ -38,14 +42,14 @@ namespace PonderingProgrammer.GridMath
                 Grid8Direction.TopRight => TopRight,
                 Grid8Direction.BottomRight => BottomRight,
                 Grid8Direction.BottomLeft => BottomLeft,
-                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null),
             };
         }
 
         public static Grid4Direction AngleToDirection4(double angle)
         {
-            if (angle < 0 || angle > TwoPi) throw new ArgumentOutOfRangeException();
-            
+            if (angle < 0 || angle > TwoPi) throw new ArgumentOutOfRangeException(nameof(angle), angle, null);
+
             if (angle >= BottomRight || angle < TopRight) return Grid4Direction.Right;
             if (angle >= TopRight || angle < TopLeft) return Grid4Direction.Top;
             if (angle >= TopLeft || angle < BottomLeft) return Grid4Direction.Left;
@@ -54,7 +58,7 @@ namespace PonderingProgrammer.GridMath
 
         public static Grid8Direction AngleToDirection8(double angle)
         {
-            if (angle < 0 || angle > TwoPi) throw new ArgumentOutOfRangeException();
+            if (angle < 0 || angle > TwoPi) throw new ArgumentOutOfRangeException(nameof(angle), angle, null);
 
             if (angle >= BottomRight || angle < TopRight) return Grid8Direction.Right;
             if (angle >= Right || angle < Top) return Grid8Direction.TopRight;
@@ -90,7 +94,7 @@ namespace PonderingProgrammer.GridMath
             {
                 Grid4Rotation.Ccw90 => Top,
                 Grid4Rotation.Cw90 => Bottom,
-                _ => 0
+                _ => 0,
             };
             return rotAngle;
         }

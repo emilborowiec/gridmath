@@ -1,15 +1,15 @@
-namespace PonderingProgrammer.Map2d.ProcGen
+namespace PonderingProgrammer.GridMath
 {
     public enum BoxAlignment
     {
-        CENTER,
-        TOP,
-        TOP_RIGHT,
-        RIGHT,
-        BOTTOM_RIGHT,
-        BOTTOM,
-        BOTTOM_LEFT,
-        LEFT,
-        TOP_LEFT
+        Center,
+        Top,
+        TopRight,
+        Right,
+        BottomRight,
+        Bottom,
+        BottomLeft,
+        Left,
+        TopLeft,
     }
 }

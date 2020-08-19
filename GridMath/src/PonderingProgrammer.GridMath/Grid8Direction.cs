@@ -9,6 +9,6 @@
         BottomRight,
         Bottom,
         BottomLeft,
-        Left
+        Left,
     }
 }

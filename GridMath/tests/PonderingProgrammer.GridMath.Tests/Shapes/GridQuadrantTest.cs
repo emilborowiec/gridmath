@@ -1,5 +1,9 @@
-﻿using PonderingProgrammer.GridMath.Shapes;
+﻿#region
+
+using PonderingProgrammer.GridMath.Shapes;
 using Xunit;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Tests.Shapes
 {
@@ -25,6 +29,5 @@ namespace PonderingProgrammer.GridMath.Tests.Shapes
             c.Rotate(Grid4Rotation.Ccw90);
             Assert.Equal(15, c.Coordinates.Count);
         }
-
     }
 }

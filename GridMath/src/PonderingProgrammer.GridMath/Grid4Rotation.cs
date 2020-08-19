@@ -3,6 +3,6 @@
     public enum Grid4Rotation
     {
         Ccw90,
-        Cw90
+        Cw90,
     }
 }

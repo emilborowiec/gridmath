@@ -1,5 +1,9 @@
-﻿using PonderingProgrammer.GridMath.Shapes;
+﻿#region
+
+using PonderingProgrammer.GridMath.Shapes;
 using Xunit;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Tests.Shapes
 {
@@ -14,8 +18,8 @@ namespace PonderingProgrammer.GridMath.Tests.Shapes
             Assert.Equal(2, point.BoundingBox.MaxX);
             Assert.Equal(5, point.BoundingBox.MinY);
             Assert.Equal(5, point.BoundingBox.MaxY);
-            Assert.Equal(5, ((AbstractGridShape) point).Coordinates[0].Y);
-            Assert.Equal(point.Position, ((AbstractGridShape) point).Coordinates[0]);
+            Assert.Equal(5, point.Coordinates[0].Y);
+            Assert.Equal(point.Position, point.Coordinates[0]);
         }
     }
 }

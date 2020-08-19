@@ -1,12 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath
 {
     /// <summary>
-    /// Utility class for operations on collections of GridIntervals
+    ///     Utility class for operations on collections of GridIntervals
     /// </summary>
     public static class GridIntervals
     {
@@ -15,24 +18,31 @@ namespace PonderingProgrammer.GridMath
             var depth = i1.Depth(i2);
             if (depth == 0) return new[] {i1, i2};
             var t1 = RealToGrid.ToGrid(depth / 2.0);
-            var t2 = (depth % 2 == 0) ? -t1 : RealToGrid.ToGrid(-(depth + 1) / 2.0);
+            var t2 = depth % 2 == 0 ? -t1 : RealToGrid.ToGrid(-(depth + 1) / 2.0);
             return new[] {i1.Translation(t1), i2.Translation(t2)};
         }
 
         /// <summary>
-        /// Finds subsets of overlapping intervals with positions where given set starts overlapping.
+        ///     Finds subsets of overlapping intervals with positions where given set starts overlapping.
         /// </summary>
         /// <param name="intervals">intervals to check</param>
-        /// <returns>A tuple where first value is the position on grid space and second is list of intervals indexes referring to input array</returns>
+        /// <returns>
+        ///     A tuple where first value is the position on grid space and second is list of intervals indexes referring to
+        ///     input array
+        /// </returns>
         public static List<List<int>> FindOverlappingIntervals(GridInterval[] intervals)
         {
             var listOfOverlappingLists = new List<List<int>>();
-            var sortedStarts = intervals.Select((interval, index) => (index, interval.Min)).OrderBy(tuple  => tuple.Min).ToArray();
-            var sortedEnds = intervals.Select((interval, index) => (index, interval.MaxExcl)).OrderBy(tuple => tuple.MaxExcl).ToArray();
+            var sortedStarts = intervals.Select((interval, index) => (index, interval.Min))
+                                        .OrderBy(tuple => tuple.Min)
+                                        .ToArray();
+            var sortedEnds = intervals.Select((interval, index) => (index, interval.MaxExcl))
+                                      .OrderBy(tuple => tuple.MaxExcl)
+                                      .ToArray();
 
             var startsIndex = 0;
             var endsIndex = 0;
-            
+
             List<int> currentOverlapList = null;
 
             while (endsIndex < sortedEnds.Length)
@@ -47,12 +57,15 @@ namespace PonderingProgrammer.GridMath
                 {
                     if (currentOverlapList != null && currentOverlapList.Count > 1)
                     {
-                        if (!listOfOverlappingLists.Any(list => list.Intersect(currentOverlapList).Count() == currentOverlapList.Count))
+                        if (!listOfOverlappingLists.Any(list =>
+                                                            list.Intersect(currentOverlapList).Count() ==
+                                                            currentOverlapList.Count))
                         {
                             listOfOverlappingLists.Add(currentOverlapList);
                             currentOverlapList = new List<int>(currentOverlapList);
                         }
                     }
+
                     currentOverlapList.Remove(sortedEnds[endsIndex].index);
                     endsIndex++;
                 }
@@ -68,6 +81,8 @@ namespace PonderingProgrammer.GridMath
 
         public static int FindCenterOfMass(GridInterval[] intervals)
         {
+            if (intervals == null) throw new ArgumentNullException(nameof(intervals));
+
             var weightDict = new Dictionary<int, int>();
             var positionSum = 0;
             foreach (var interval in intervals)
@@ -83,8 +98,12 @@ namespace PonderingProgrammer.GridMath
             return weightDict.Sum(pair => pair.Key * pair.Value) / positionSum;
         }
 
-        public static void Pack(GridInterval[] intervals, IntervalAnchor alignment = IntervalAnchor.Center, int spacing = 0)
+        public static void Pack(GridInterval[] intervals,
+                                IntervalAnchor alignment = IntervalAnchor.Center,
+                                int spacing = 0)
         {
+            if (intervals == null) throw new ArgumentNullException(nameof(intervals));
+
             var originalTotalMin = int.MaxValue;
             var originalTotalMax = int.MinValue;
             var centerOfMass = FindCenterOfMass(intervals);
@@ -92,15 +111,9 @@ namespace PonderingProgrammer.GridMath
             var translation = 0;
             for (var i = 0; i < intervals.Length; i++)
             {
-                if (originalTotalMin > intervals[i].Min)
-                {
-                    originalTotalMin = intervals[i].Min;
-                }
+                if (originalTotalMin > intervals[i].Min) originalTotalMin = intervals[i].Min;
 
-                if (originalTotalMax < intervals[i].Max)
-                {
-                    originalTotalMax = intervals[i].Max;
-                }
+                if (originalTotalMax < intervals[i].Max) originalTotalMax = intervals[i].Max;
                 intervals[i] = intervals[i].SetMin(nextMin);
                 nextMin = intervals[i].MaxExcl + spacing;
             }
@@ -110,13 +123,10 @@ namespace PonderingProgrammer.GridMath
                 IntervalAnchor.Start => originalTotalMin,
                 IntervalAnchor.End => originalTotalMax - intervals[^1].Max,
                 IntervalAnchor.Center => centerOfMass - FindCenterOfMass(intervals),
-                _ => throw new ArgumentOutOfRangeException()
+                _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null),
             };
 
-            foreach (var interval in intervals)
-            {
-                interval.Translation(translation);
-            }
+            foreach (var interval in intervals) interval.Translation(translation);
         }
     }
 }

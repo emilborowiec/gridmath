@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
-
-namespace PonderingProgrammer.GridMath.Shapes
+﻿namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridCircle : AbstractGridShape
     {
-        private GridCoordinatePair _center;
-        private int _radius;
-
         public GridCircle(GridCoordinatePair center, int radius)
         {
             _center = center;
             _radius = radius;
             Update();
         }
+
+        private GridCoordinatePair _center;
+        private int _radius;
 
         public GridCoordinatePair Center
         {
@@ -52,13 +50,14 @@ namespace PonderingProgrammer.GridMath.Shapes
         protected sealed override void Update()
         {
             BBox = GridBoundingBox.FromMinMax(_center.X - _radius, _center.Y - _radius, _center.X + _radius,
-                _center.Y + _radius);
-            Coords = new List<GridCoordinatePair>();
+                                              _center.Y + _radius);
+            Coords.Clear();
             for (var y = BoundingBox.MinY; y < BoundingBox.MaxYExcl; y++)
+            for (var x = BoundingBox.MinX; x < BoundingBox.MaxXExcl; x++)
             {
-                for (var x = BoundingBox.MinX; x < BoundingBox.MaxXExcl; x++)
+                if (_center.EuclideanDistance(x, y) <= _radius)
                 {
-                    if (_center.EuclideanDistance(x, y) <= _radius) Coords.Add(new GridCoordinatePair(x, y));
+                    Coords.Add(new GridCoordinatePair(x, y));
                 }
             }
         }

@@ -1,10 +1,45 @@
-﻿using System.Linq;
+﻿#region
+
+using System.Linq;
 using Xunit;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Tests
 {
     public class GridIntervalsTest
     {
+        [Fact]
+        public void FindOverlappingIntervalsTest()
+        {
+            var i1 = new GridInterval(0, 10);
+            var i2 = new GridInterval(1, 3);
+            var i3 = new GridInterval(2, 3);
+            var i4 = new GridInterval(4, 13);
+            var i5 = new GridInterval(12, 14);
+            var i6 = new GridInterval(15, 16);
+
+            var overlappingGroups = GridIntervals.FindOverlappingIntervals(new[] {i1, i2, i3, i4, i5, i6});
+
+            Assert.Equal(3, overlappingGroups.Count);
+            Assert.Equal(3, overlappingGroups[0].Count);
+            Assert.Equal(2, overlappingGroups[1].Count);
+            Assert.Equal(2, overlappingGroups[2].Count);
+            Assert.DoesNotContain(overlappingGroups.SelectMany(g => g), index => index == 5);
+        }
+
+        [Fact]
+        public void FindOverlappingIntervalsTest2()
+        {
+            var i1 = new GridInterval(1, 3);
+            var i2 = new GridInterval(3, 5);
+            var i3 = new GridInterval(1, 4);
+
+            var overlappingGroups = GridIntervals.FindOverlappingIntervals(new[] {i1, i2, i3});
+
+            Assert.Single(overlappingGroups);
+        }
+
         [Fact]
         public void SeparateTest()
         {
@@ -24,37 +59,6 @@ namespace PonderingProgrammer.GridMath.Tests
         }
 
         [Fact]
-        public void FindOverlappingIntervalsTest()
-        {
-            var i1 = new GridInterval(0, 10);
-            var i2 = new GridInterval(1, 3);
-            var i3 = new GridInterval(2, 3);
-            var i4 = new GridInterval(4, 13);
-            var i5 = new GridInterval(12, 14);
-            var i6 = new GridInterval(15, 16);
-
-            var overlappingGroups = GridIntervals.FindOverlappingIntervals(new [] {i1, i2, i3, i4, i5, i6});
-
-            Assert.Equal(3, overlappingGroups.Count);
-            Assert.Equal(3, overlappingGroups[0].Count);
-            Assert.Equal(2, overlappingGroups[1].Count);
-            Assert.Equal(2, overlappingGroups[2].Count);
-            Assert.False(overlappingGroups.SelectMany(g => g).Any(index => index == 5));
-        }
-        
-        [Fact]
-        public void FindOverlappingIntervalsTest2()
-        {
-            var i1 = new GridInterval(1, 3);
-            var i2 = new GridInterval(3, 5);
-            var i3 = new GridInterval(1, 4);
-
-            var overlappingGroups = GridIntervals.FindOverlappingIntervals(new [] {i1, i2, i3});
-
-            Assert.Equal(1, overlappingGroups.Count);
-        }
-
-        [Fact]
         public void TestFindCenterOfMass()
         {
             var i1 = new GridInterval(-2, -2);
@@ -63,7 +67,7 @@ namespace PonderingProgrammer.GridMath.Tests
             var i4 = new GridInterval(4, 4);
 
             var center = GridIntervals.FindCenterOfMass(new[] {i1, i2, i3, i4});
-            
+
             Assert.Equal(0, center);
         }
     }

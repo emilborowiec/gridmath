@@ -1,5 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
@@ -32,17 +35,23 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         public override void Rotate(Grid4Rotation rotation)
         {
-            var topRight = GridPolarCoordinates.FromGridCartesian(Rectangle.TopRight.Translation(-Rectangle.Center.X, -Rectangle.Center.Y));
-            var bottomLeft = GridPolarCoordinates.FromGridCartesian(Rectangle.BottomLeft.Translation(-Rectangle.Center.X, -Rectangle.Center.Y));
+            var topRight =
+                GridPolarCoordinates.FromGridCartesian(Rectangle.TopRight.Translation(-Rectangle.Center.X,
+                                                           -Rectangle.Center.Y));
+            var bottomLeft =
+                GridPolarCoordinates.FromGridCartesian(
+                    Rectangle.BottomLeft.Translation(-Rectangle.Center.X, -Rectangle.Center.Y));
             var rotatedTopRight = topRight.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
             var rotatedBottomLeft = bottomLeft.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
             Rectangle = rotation switch
             {
-                Grid4Rotation.Ccw90 => GridBoundingBox.FromMinMax(rotatedTopRight.Translation(Rectangle.Center.X, Rectangle.Center.Y), 
+                Grid4Rotation.Ccw90 => GridBoundingBox.FromMinMax(
+                    rotatedTopRight.Translation(Rectangle.Center.X, Rectangle.Center.Y),
                     rotatedBottomLeft.Translation(Rectangle.Center.X, Rectangle.Center.Y)),
-                Grid4Rotation.Cw90 => GridBoundingBox.FromMinMax(rotatedBottomLeft.Translation(Rectangle.Center.X, Rectangle.Center.Y), 
+                Grid4Rotation.Cw90 => GridBoundingBox.FromMinMax(
+                    rotatedBottomLeft.Translation(Rectangle.Center.X, Rectangle.Center.Y),
                     rotatedTopRight.Translation(Rectangle.Center.X, Rectangle.Center.Y)),
-                _ => throw new ArgumentOutOfRangeException()
+                _ => throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null),
             };
         }
 
@@ -53,13 +62,11 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         protected override void Update()
         {
-            Coords = new List<GridCoordinatePair>();
+            Coords.Clear();
             for (var y = Rectangle.MinY; y < Rectangle.MaxYExcl; y++)
+            for (var x = Rectangle.MinX; x < Rectangle.MaxXExcl; x++)
             {
-                for (var x = Rectangle.MinX; x < Rectangle.MaxXExcl; x++)
-                {
-                    Coords.Add(new GridCoordinatePair(x, y));
-                }
+                Coords.Add(new GridCoordinatePair(x, y));
             }
         }
     }

@@ -1,40 +1,38 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PonderingProgrammer.Map2d.ProcGen;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath
 {
     /// <summary>
-    /// Utility class for operations on collections of GriBoundingBoxes
+    ///     Utility class for operations on collections of GriBoundingBoxes
     /// </summary>
     public static class GridBoundingBoxes
     {
         public static List<List<int>> FindOverlappingBoxes(GridBoundingBox[] boxes)
         {
             var listOfOverlapLists = new List<List<int>>();
-            
+
             var xOverlapGroups =
                 GridIntervals.FindOverlappingIntervals(boxes.Select(box => box.XInterval).ToArray());
             var yOverlapGroups =
                 GridIntervals.FindOverlappingIntervals(boxes.Select(box => box.YInterval).ToArray());
-            
+
             // is there a list on x lists which has the same two or more indices that some y list
             foreach (var xOverlapList in xOverlapGroups)
+            foreach (var yOverlapList in yOverlapGroups)
             {
-                foreach (var yOverlapList in yOverlapGroups)
+                var commons = xOverlapList.Where(yOverlapList.Contains).ToArray();
+                if (commons.Length > 1)
                 {
-                    var commons = xOverlapList.Where(yOverlapList.Contains).ToArray();
-                    if (commons.Length > 1)
-                    {
-                        var overlappingBoxes = new List<int>();
-                        for (var i = 0; i < commons.Length; i++)
-                        {
-                            overlappingBoxes.Add(commons[i]);
-                        }
+                    var overlappingBoxes = new List<int>();
+                    for (var i = 0; i < commons.Length; i++) overlappingBoxes.Add(commons[i]);
 
-                        listOfOverlapLists.Add(overlappingBoxes);
-                    }
+                    listOfOverlapLists.Add(overlappingBoxes);
                 }
             }
 
@@ -49,13 +47,15 @@ namespace PonderingProgrammer.GridMath
         }
 
         /// <summary>
-        /// Packs boudning boxes somewhat organically. Does not try too hard to save space.
+        ///     Packs boudning boxes somewhat organically. Does not try too hard to save space.
         /// </summary>
         /// <param name="boxes"></param>
         /// <param name="alignment"></param>
         /// <param name="spacing"></param>
-        public static void Pack(GridBoundingBox[] boxes, BoxAlignment alignment = BoxAlignment.CENTER, int spacing = 0)
+        public static void Pack(GridBoundingBox[] boxes, BoxAlignment alignment = BoxAlignment.Center, int spacing = 0)
         {
+            if (boxes == null) throw new ArgumentNullException(nameof(boxes));
+
             var originalTotalMinX = int.MaxValue;
             var originalTotalMaxX = int.MinValue;
             var newTotalMaxX = int.MinValue;
@@ -70,18 +70,21 @@ namespace PonderingProgrammer.GridMath
                 if (originalTotalMinY > boxes[i].MinY) originalTotalMinY = boxes[i].MinY;
                 if (originalTotalMaxX < boxes[i].MaxX) originalTotalMaxX = boxes[i].MaxX;
                 if (originalTotalMaxY < boxes[i].MaxY) originalTotalMaxY = boxes[i].MaxY;
-                
+
                 foreach (var coords in possibilities)
                 {
                     var box = boxes[i].SetPosition(coords.X, coords.Y, IntervalAnchor.Start, IntervalAnchor.Start);
                     var fits = true;
-                    for (int j = 0; j < i; j++)
+                    for (var j = 0; j < i; j++)
                     {
-                        if (box.Overlaps(boxes[j])) fits = false;
+                        if (box.Overlaps(boxes[j]))
+                        {
+                            fits = false;
+                        }
                     }
 
                     if (!fits) continue;
-                    
+
                     boxes[i] = box;
                     possibilities.Remove(coords);
                     // alternate horizontal and vertical possibilities
@@ -95,6 +98,7 @@ namespace PonderingProgrammer.GridMath
                         possibilities.Add(new GridCoordinatePair(box.MinX, box.MaxYExcl + spacing));
                         possibilities.Add(new GridCoordinatePair(box.MaxXExcl + spacing, box.MinY));
                     }
+
                     if (newTotalMaxX < boxes[i].MaxX) newTotalMaxX = boxes[i].MaxX;
                     if (newTotalMaxY < boxes[i].MaxY) newTotalMaxY = boxes[i].MaxY;
                     break;
@@ -104,22 +108,23 @@ namespace PonderingProgrammer.GridMath
             var newCenterOfMass = FindCenterOfMass(boxes);
             var translation = alignment switch
             {
-                BoxAlignment.TOP_LEFT => new GridCoordinatePair(originalTotalMinX, originalTotalMinY),
-                BoxAlignment.TOP => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMinY),
-                BoxAlignment.TOP_RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMinY),
-                BoxAlignment.RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, centerOfMass.Y - newCenterOfMass.Y),
-                BoxAlignment.BOTTOM_RIGHT => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMaxY - newTotalMaxY),
-                BoxAlignment.BOTTOM => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMaxY - newTotalMaxY),
-                BoxAlignment.BOTTOM_LEFT => new GridCoordinatePair(originalTotalMinX, originalTotalMaxY - newTotalMaxY),
-                BoxAlignment.LEFT => new GridCoordinatePair(originalTotalMinX, centerOfMass.Y - newCenterOfMass.Y),
-                BoxAlignment.CENTER => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, centerOfMass.Y - newCenterOfMass.Y),
-                _ => throw new ArgumentOutOfRangeException()
+                BoxAlignment.TopLeft => new GridCoordinatePair(originalTotalMinX, originalTotalMinY),
+                BoxAlignment.Top => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMinY),
+                BoxAlignment.TopRight => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMinY),
+                BoxAlignment.Right => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX,
+                                                             centerOfMass.Y - newCenterOfMass.Y),
+                BoxAlignment.BottomRight => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX,
+                                                                   originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.Bottom => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X,
+                                                              originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.BottomLeft => new GridCoordinatePair(originalTotalMinX, originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.Left => new GridCoordinatePair(originalTotalMinX, centerOfMass.Y - newCenterOfMass.Y),
+                BoxAlignment.Center => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X,
+                                                              centerOfMass.Y - newCenterOfMass.Y),
+                _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null),
             };
 
-            foreach (var box in boxes)
-            {
-                box.Translation(translation.X, translation.Y);
-            }
+            foreach (var box in boxes) box.Translation(translation.X, translation.Y);
         }
     }
 }

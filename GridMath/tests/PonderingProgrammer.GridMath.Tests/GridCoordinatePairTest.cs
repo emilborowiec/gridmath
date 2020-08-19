@@ -1,22 +1,13 @@
-﻿using System;
+﻿#region
+
 using Xunit;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Tests
 {
     public class GridCoordinatePairTest
     {
-        [Fact]
-        public void TestEquality()
-        {
-            var c1 = new GridCoordinatePair(2, 2);
-            var c2 = new GridCoordinatePair(2, 2);
-            var c3 = new GridCoordinatePair();
-            var c4 = new GridCoordinatePair();
-            Assert.Equal(c1, c2);
-            Assert.Equal(c3, c4);
-            Assert.NotEqual(c1, c3);
-        }
-
         [Theory]
         [InlineData(1, 2, 1, 2)]
         [InlineData(1.1, 2.9, 1, 2)]
@@ -63,6 +54,18 @@ namespace PonderingProgrammer.GridMath.Tests
             var c2 = c.Translation(x, y);
             Assert.Equal(10 + x, c2.X);
             Assert.Equal(10 + y, c2.Y);
+        }
+
+        [Fact]
+        public void TestEquality()
+        {
+            var c1 = new GridCoordinatePair(2, 2);
+            var c2 = new GridCoordinatePair(2, 2);
+            var c3 = new GridCoordinatePair();
+            var c4 = new GridCoordinatePair();
+            Assert.Equal(c1, c2);
+            Assert.Equal(c3, c4);
+            Assert.NotEqual(c1, c3);
         }
     }
 }

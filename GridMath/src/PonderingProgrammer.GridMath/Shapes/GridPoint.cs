@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-
-namespace PonderingProgrammer.GridMath.Shapes
+﻿namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridPoint : AbstractGridShape
     {
-        private GridCoordinatePair _position;
-
         public GridPoint(GridCoordinatePair position)
         {
             Position = position;
         }
+
+        private GridCoordinatePair _position;
 
         public GridCoordinatePair Position
         {
@@ -38,7 +36,8 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         protected override void Update()
         {
-            Coords = new List<GridCoordinatePair> {Position};
+            Coords.Clear();
+            Coords.Add(Position);
             BBox = GridBoundingBox.FromMinMax(Position.X, Position.Y, Position.X, Position.Y);
         }
     }

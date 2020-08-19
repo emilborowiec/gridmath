@@ -1,13 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridQuadrant : AbstractGridShape
     {
+        public GridQuadrant(GridCoordinatePair origin, int radius, Grid8Direction direction)
+        {
+            _origin = origin;
+            _radius = radius;
+            _direction = direction;
+            Update();
+        }
+
+        private readonly Grid8Direction _direction;
         private GridCoordinatePair _origin;
         private int _radius;
-        private Grid8Direction _direction;
 
         public GridCoordinatePair Origin
         {
@@ -29,14 +40,6 @@ namespace PonderingProgrammer.GridMath.Shapes
             }
         }
 
-        public GridQuadrant(GridCoordinatePair origin, int radius, Grid8Direction direction)
-        {
-            _origin = origin;
-            _radius = radius;
-            _direction = direction;
-            Update();
-        }
-
         public override void Translate(int x, int y)
         {
             Origin = _origin.Translation(x, y);
@@ -49,14 +52,14 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         public override void Flip(GridAxis axis)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
-        
+
         protected sealed override void Update()
         {
             BBox = GridBoundingBox.FromMinMax(_origin.X - _radius, _origin.Y - _radius, _origin.X + _radius,
-                _origin.Y + _radius);
-            Coords = new List<GridCoordinatePair>();
+                                              _origin.Y + _radius);
+            Coords.Clear();
 
             GridPolarCoordinates start;
             GridPolarCoordinates end;
@@ -99,24 +102,22 @@ namespace PonderingProgrammer.GridMath.Shapes
             }
 
             for (var y = BoundingBox.MinY; y < BoundingBox.MaxYExcl; y++)
+            for (var x = BoundingBox.MinX; x < BoundingBox.MaxXExcl; x++)
             {
-                for (var x = BoundingBox.MinX; x < BoundingBox.MaxXExcl; x++)
+                if (_origin.EuclideanDistance(x, y) > _radius) continue;
+
+                var polar = GridPolarCoordinates.FromGridCartesian(x - _origin.X, y - _origin.Y);
+
+                if (end.Theta > start.Theta)
                 {
-                    if (_origin.EuclideanDistance(x, y) > _radius) continue;
-
-                    var polar = GridPolarCoordinates.FromGridCartesian(x - _origin.X, y - _origin.Y);
-
-                    if (end.Theta > start.Theta)
-                    {
-                        if (polar.Theta < start.Theta || polar.Theta > end.Theta) continue;
-                    }
-                    else
-                    {
-                        if (polar.Theta < start.Theta && polar.Theta > end.Theta) continue;
-                    }
-                    
-                    Coords.Add(new GridCoordinatePair(x, y));
+                    if (polar.Theta < start.Theta || polar.Theta > end.Theta) continue;
                 }
+                else
+                {
+                    if (polar.Theta < start.Theta && polar.Theta > end.Theta) continue;
+                }
+
+                Coords.Add(new GridCoordinatePair(x, y));
             }
         }
     }
