@@ -57,8 +57,9 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         protected sealed override void Update()
         {
-            BBox = GridBoundingBox.FromMinMax(_origin.X - _radius, _origin.Y - _radius, _origin.X + _radius,
-                                              _origin.Y + _radius);
+            BBox = GridBoundingBox.FromMinMax(
+                _origin.X - _radius, _origin.Y - _radius, _origin.X + _radius,
+                _origin.Y + _radius);
             Coords.Clear();
 
             GridPolarCoordinates start;

@@ -106,8 +106,10 @@ namespace PonderingProgrammer.GridMath
 
         public bool Touches(GridBoundingBox other)
         {
-            return (XInterval.Touches(other.XInterval) && YInterval.Overlaps(other.YInterval))
-                   || (YInterval.Touches(other.YInterval) && XInterval.Overlaps(other.XInterval));
+            return (XInterval.Touches(other.XInterval) &&
+                    (YInterval.Overlaps(other.YInterval) || YInterval.Touches(other.YInterval)))
+                   || (YInterval.Touches(other.YInterval) &&
+                       (XInterval.Overlaps(other.XInterval) || XInterval.Touches(other.XInterval)));
         }
 
         public GridBoundingBox Translation(int x, int y)
@@ -115,15 +117,17 @@ namespace PonderingProgrammer.GridMath
             return new GridBoundingBox(XInterval.Translation(x), YInterval.Translation(y));
         }
 
-        public GridBoundingBox SetPosition(int x,
-                                           int y,
-                                           IntervalAnchor xAnchor,
-                                           IntervalAnchor yAnchor,
-                                           int xOffset = 0,
-                                           int yOffset = 0)
+        public GridBoundingBox SetPosition(
+            int x,
+            int y,
+            IntervalAnchor xAnchor,
+            IntervalAnchor yAnchor,
+            int xOffset = 0,
+            int yOffset = 0)
         {
-            return new GridBoundingBox(XInterval.SetPosition(x, xAnchor, xOffset),
-                                       YInterval.SetPosition(y, yAnchor, yOffset));
+            return new GridBoundingBox(
+                XInterval.SetPosition(x, xAnchor, xOffset),
+                YInterval.SetPosition(y, yAnchor, yOffset));
         }
 
         public GridBoundingBox SetMinX(int value)
@@ -146,14 +150,16 @@ namespace PonderingProgrammer.GridMath
             return new GridBoundingBox(XInterval, YInterval.SetMax(value));
         }
 
-        public GridBoundingBox Relate(GridBoundingBox other,
-                                      Relation xRelation,
-                                      Relation yRelation,
-                                      int xOffset = 0,
-                                      int yOffset = 0)
+        public GridBoundingBox Relate(
+            GridBoundingBox other,
+            Relation xRelation,
+            Relation yRelation,
+            int xOffset = 0,
+            int yOffset = 0)
         {
-            return new GridBoundingBox(XInterval.Relate(other.XInterval, xRelation, xOffset),
-                                       YInterval.Relate(other.YInterval, yRelation, yOffset));
+            return new GridBoundingBox(
+                XInterval.Relate(other.XInterval, xRelation, xOffset),
+                YInterval.Relate(other.YInterval, yRelation, yOffset));
         }
 
         public GridBoundingBox PlaceBeside(GridBoundingBox other, Grid4Direction direction)

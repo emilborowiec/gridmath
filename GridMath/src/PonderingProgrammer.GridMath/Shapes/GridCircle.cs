@@ -49,8 +49,9 @@
 
         protected sealed override void Update()
         {
-            BBox = GridBoundingBox.FromMinMax(_center.X - _radius, _center.Y - _radius, _center.X + _radius,
-                                              _center.Y + _radius);
+            BBox = GridBoundingBox.FromMinMax(
+                _center.X - _radius, _center.Y - _radius, _center.X + _radius,
+                _center.Y + _radius);
             Coords.Clear();
             for (var y = BoundingBox.MinY; y < BoundingBox.MaxYExcl; y++)
             for (var x = BoundingBox.MinX; x < BoundingBox.MaxXExcl; x++)

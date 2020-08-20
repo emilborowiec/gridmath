@@ -57,9 +57,10 @@ namespace PonderingProgrammer.GridMath
                 {
                     if (currentOverlapList != null && currentOverlapList.Count > 1)
                     {
-                        if (!listOfOverlappingLists.Any(list =>
-                                                            list.Intersect(currentOverlapList).Count() ==
-                                                            currentOverlapList.Count))
+                        if (!listOfOverlappingLists.Any(
+                            list =>
+                                list.Intersect(currentOverlapList).Count() ==
+                                currentOverlapList.Count))
                         {
                             listOfOverlappingLists.Add(currentOverlapList);
                             currentOverlapList = new List<int>(currentOverlapList);
@@ -98,9 +99,10 @@ namespace PonderingProgrammer.GridMath
             return weightDict.Sum(pair => pair.Key * pair.Value) / positionSum;
         }
 
-        public static void Pack(GridInterval[] intervals,
-                                IntervalAnchor alignment = IntervalAnchor.Center,
-                                int spacing = 0)
+        public static void Pack(
+            GridInterval[] intervals,
+            IntervalAnchor alignment = IntervalAnchor.Center,
+            int spacing = 0)
         {
             if (intervals == null) throw new ArgumentNullException(nameof(intervals));
 

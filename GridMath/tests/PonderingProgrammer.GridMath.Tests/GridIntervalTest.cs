@@ -117,14 +117,14 @@ namespace PonderingProgrammer.GridMath.Tests
         }
 
         [Theory]
-        [InlineData(-4, -2)]
-        [InlineData(-3, -1)]
-        [InlineData(-2, 0)]
+        [InlineData(-4, -3)]
+        [InlineData(-3, -2)]
+        [InlineData(-2, -1)]
         [InlineData(-1, 0)]
         [InlineData(0, 0)]
         [InlineData(1, 0)]
-        [InlineData(2, 0)]
-        [InlineData(3, 1)]
+        [InlineData(2, 1)]
+        [InlineData(3, 2)]
         public void TestDistance(int value, int expected)
         {
             var interval = new GridInterval(-1, 1);
@@ -132,14 +132,14 @@ namespace PonderingProgrammer.GridMath.Tests
         }
 
         [Theory]
-        [InlineData(-4, -3, -1)]
-        [InlineData(-3, -2, 0)]
+        [InlineData(-4, -3, -2)]
+        [InlineData(-3, -2, -1)]
         [InlineData(-2, -1, 0)]
         [InlineData(-1, 0, 0)]
         [InlineData(0, 1, 0)]
-        [InlineData(1, 2, 0)]
-        [InlineData(2, 3, 1)]
-        [InlineData(3, 4, 2)]
+        [InlineData(1, 2, 1)]
+        [InlineData(2, 3, 2)]
+        [InlineData(3, 4, 3)]
         [InlineData(-2, 3, 0)]
         public void TestDistanceToOther(int otherMin, int otherMax, int expected)
         {

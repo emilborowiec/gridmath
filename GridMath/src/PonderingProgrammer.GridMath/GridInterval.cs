@@ -188,13 +188,13 @@ namespace PonderingProgrammer.GridMath
         /// <returns>
         ///     Positive distance if the value is value is to the right of this interval.
         ///     Negative distance if the value is to the left of this interval.
-        ///     0 if this interval contains or touches the value
+        ///     0 if this interval contains the value
         /// </returns>
         public int Distance(int coordinate)
         {
-            if (Contains(coordinate) || Touches(coordinate)) return 0;
-            if (coordinate > MaxExcl) return coordinate - MaxExcl;
-            return coordinate - (Min - 1);
+            if (Contains(coordinate)) return 0;
+            if (coordinate > Max) return coordinate - Max;
+            return coordinate - Min;
         }
 
         /// <summary>
@@ -202,13 +202,13 @@ namespace PonderingProgrammer.GridMath
         /// </summary>
         /// <param name="other">another GridInterval to which we measure distance</param>
         /// <returns>
-        ///     0 if the intervals are touching or overlapping.
+        ///     0 if the intervals are overlapping.
         ///     Positive distance if other is to the right.
         ///     Negative distance if other is to the left.
         /// </returns>
         public int Distance(GridInterval other)
         {
-            if (Overlaps(other) || Touches(other)) return 0;
+            if (Overlaps(other)) return 0;
             return other.Min > Max ? Distance(other.Min) : Distance(other.Max);
         }
 

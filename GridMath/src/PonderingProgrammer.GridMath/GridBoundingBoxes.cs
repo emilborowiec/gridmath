@@ -111,16 +111,20 @@ namespace PonderingProgrammer.GridMath
                 BoxAlignment.TopLeft => new GridCoordinatePair(originalTotalMinX, originalTotalMinY),
                 BoxAlignment.Top => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMinY),
                 BoxAlignment.TopRight => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMinY),
-                BoxAlignment.Right => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX,
-                                                             centerOfMass.Y - newCenterOfMass.Y),
-                BoxAlignment.BottomRight => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX,
-                                                                   originalTotalMaxY - newTotalMaxY),
-                BoxAlignment.Bottom => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X,
-                                                              originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.Right => new GridCoordinatePair(
+                    originalTotalMaxX - newTotalMaxX,
+                    centerOfMass.Y - newCenterOfMass.Y),
+                BoxAlignment.BottomRight => new GridCoordinatePair(
+                    originalTotalMaxX - newTotalMaxX,
+                    originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.Bottom => new GridCoordinatePair(
+                    centerOfMass.X - newCenterOfMass.X,
+                    originalTotalMaxY - newTotalMaxY),
                 BoxAlignment.BottomLeft => new GridCoordinatePair(originalTotalMinX, originalTotalMaxY - newTotalMaxY),
                 BoxAlignment.Left => new GridCoordinatePair(originalTotalMinX, centerOfMass.Y - newCenterOfMass.Y),
-                BoxAlignment.Center => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X,
-                                                              centerOfMass.Y - newCenterOfMass.Y),
+                BoxAlignment.Center => new GridCoordinatePair(
+                    centerOfMass.X - newCenterOfMass.X,
+                    centerOfMass.Y - newCenterOfMass.Y),
                 _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null),
             };
 

@@ -36,8 +36,10 @@ namespace PonderingProgrammer.GridMath.Shapes
         public override void Rotate(Grid4Rotation rotation)
         {
             var topRight =
-                GridPolarCoordinates.FromGridCartesian(Rectangle.TopRight.Translation(-Rectangle.Center.X,
-                                                           -Rectangle.Center.Y));
+                GridPolarCoordinates.FromGridCartesian(
+                    Rectangle.TopRight.Translation(
+                        -Rectangle.Center.X,
+                        -Rectangle.Center.Y));
             var bottomLeft =
                 GridPolarCoordinates.FromGridCartesian(
                     Rectangle.BottomLeft.Translation(-Rectangle.Center.X, -Rectangle.Center.Y));
