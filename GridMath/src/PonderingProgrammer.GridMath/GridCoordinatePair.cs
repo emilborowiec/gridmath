@@ -26,7 +26,12 @@ namespace PonderingProgrammer.GridMath
         /// <returns>Corresponding GridCoordinate</returns>
         public static GridCoordinatePair FromReal(double x, double y)
         {
-            return new GridCoordinatePair(RealToGrid.ToGrid(x), RealToGrid.ToGrid(y));
+            return new GridCoordinatePair(GridConvert.ToGrid(x), GridConvert.ToGrid(y));
+        }
+
+        public static (double x, double y) ToReal(GridCoordinatePair gridCoordinates)
+        {
+            return (GridConvert.ToReal(gridCoordinates.X), GridConvert.ToReal(gridCoordinates.Y));
         }
 
         public static bool operator ==(GridCoordinatePair left, GridCoordinatePair right)

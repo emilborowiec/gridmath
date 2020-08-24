@@ -17,8 +17,8 @@ namespace PonderingProgrammer.GridMath
         {
             var depth = i1.Depth(i2);
             if (depth == 0) return new[] {i1, i2};
-            var t1 = RealToGrid.ToGrid(depth / 2.0);
-            var t2 = depth % 2 == 0 ? -t1 : RealToGrid.ToGrid(-(depth + 1) / 2.0);
+            var t1 = GridConvert.ToGrid(depth / 2.0);
+            var t2 = depth % 2 == 0 ? -t1 : GridConvert.ToGrid(-(depth + 1) / 2.0);
             return new[] {i1.Translation(t1), i2.Translation(t2)};
         }
 

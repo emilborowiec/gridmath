@@ -18,10 +18,10 @@ namespace PonderingProgrammer.GridMath.Algorithms
             while (queue.Count > 0)
             {
                 var c = queue.Dequeue();
-                if (fill.Contains(c) || ArrayContains(c, walls) || bounds.Contains(c)) continue;
-                
+                if (fill.Contains(c) || ArrayContains(c, walls) || !bounds.Contains(c)) continue;
+
                 fill.Add(c);
-                
+
                 queue.Enqueue(c.Translation(0, -1));
                 queue.Enqueue(c.Translation(0, 1));
                 queue.Enqueue(c.Translation(-1, 0));

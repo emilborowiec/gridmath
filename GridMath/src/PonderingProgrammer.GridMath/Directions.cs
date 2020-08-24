@@ -8,15 +8,24 @@ namespace PonderingProgrammer.GridMath
 {
     public static class Directions
     {
-        private const double TwoPi = Math.PI * 2;
-        private const double Top = Math.PI / 2;
-        private const double Right = 0;
-        private const double Bottom = Math.PI * 1.5;
-        private const double Left = Math.PI;
-        private const double TopLeft = Math.PI * 0.75;
-        private const double TopRight = Math.PI * 0.25;
-        private const double BottomRight = Math.PI * 1.75;
-        private const double BottomLeft = Math.PI * 1.25;
+        public const double TwoPi = Math.PI * 2;
+        public const double Degree0 = 0;
+        public const double Degree45 = Math.PI * 0.25;
+        public const double Degree90 = Math.PI * 0.5;
+        public const double Degree135 = Math.PI * 0.75;
+        public const double Degree180 = Math.PI;
+        public const double Degree225 = Math.PI * 1.25;
+        public const double Degree270 = Math.PI * 1.5;
+        public const double Degree315 = Math.PI * 1.75;
+
+        public const double Right = Degree0;
+        public const double BottomRight = Degree45;
+        public const double Bottom = Degree90;
+        public const double BottomLeft = Degree135;
+        public const double Left = Degree180;
+        public const double TopLeft = Degree225;
+        public const double Top = Degree270;
+        public const double TopRight = Degree315;
 
         public static double DirectionToAngle(Grid4Direction direction)
         {
@@ -48,7 +57,7 @@ namespace PonderingProgrammer.GridMath
 
         public static Grid4Direction AngleToDirection4(double angle)
         {
-            if (angle < 0 || angle > TwoPi) throw new ArgumentOutOfRangeException(nameof(angle), angle, null);
+            angle = WrapAngle(angle);
 
             if (angle >= BottomRight || angle < TopRight) return Grid4Direction.Right;
             if (angle >= TopRight || angle < TopLeft) return Grid4Direction.Top;
@@ -58,7 +67,7 @@ namespace PonderingProgrammer.GridMath
 
         public static Grid8Direction AngleToDirection8(double angle)
         {
-            if (angle < 0 || angle > TwoPi) throw new ArgumentOutOfRangeException(nameof(angle), angle, null);
+            angle = WrapAngle(angle);
 
             if (angle >= BottomRight || angle < TopRight) return Grid8Direction.Right;
             if (angle >= Right || angle < Top) return Grid8Direction.TopRight;
@@ -74,8 +83,6 @@ namespace PonderingProgrammer.GridMath
         {
             var rotAngle = Grid4RotationToAngle(rotation);
             var newAngle = DirectionToAngle(direction) + rotAngle;
-            if (newAngle < 0) newAngle += TwoPi;
-            if (newAngle > TwoPi) newAngle -= TwoPi;
             return AngleToDirection4(newAngle);
         }
 
@@ -83,8 +90,6 @@ namespace PonderingProgrammer.GridMath
         {
             var rotAngle = Grid4RotationToAngle(rotation);
             var newAngle = DirectionToAngle(direction) + rotAngle;
-            if (newAngle < 0) newAngle += TwoPi;
-            if (newAngle > TwoPi) newAngle -= TwoPi;
             return AngleToDirection8(newAngle);
         }
 
@@ -97,6 +102,11 @@ namespace PonderingProgrammer.GridMath
                 _ => 0,
             };
             return rotAngle;
+        }
+
+        public static double WrapAngle(double angle)
+        {
+            return angle - (TwoPi * Math.Floor(angle / TwoPi));
         }
     }
 }

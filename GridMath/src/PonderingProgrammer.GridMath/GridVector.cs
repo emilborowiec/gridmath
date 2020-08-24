@@ -19,7 +19,7 @@ namespace PonderingProgrammer.GridMath
         /// <returns>Corresponding GridVector</returns>
         public static GridVector FromReal(double x, double y)
         {
-            return new GridVector(RealToGrid.ToGrid(x), RealToGrid.ToGrid(y));
+            return new GridVector(GridConvert.ToGrid(x), GridConvert.ToGrid(y));
         }
 
         public static bool operator ==(GridVector left, GridVector right)

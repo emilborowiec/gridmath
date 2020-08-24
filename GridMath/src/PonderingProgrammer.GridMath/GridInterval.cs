@@ -37,7 +37,7 @@ namespace PonderingProgrammer.GridMath
     {
         public static GridInterval FromRealInterval(double min, double maxExcl)
         {
-            return FromExclusiveMax(RealToGrid.ToGrid(min), RealToGrid.ToGrid(maxExcl));
+            return FromExclusiveMax(GridConvert.ToGrid(min), GridConvert.ToGrid(maxExcl));
         }
 
         public static GridInterval FromExclusiveMax(int min, int maxExcl)
@@ -54,7 +54,7 @@ namespace PonderingProgrammer.GridMath
 
         public static GridInterval FromRealLength(int min, double realLength)
         {
-            var gridLength = RealToGrid.ToGrid(realLength);
+            var gridLength = GridConvert.ToGrid(realLength);
             return FromLength(min, gridLength);
         }
 
@@ -79,7 +79,7 @@ namespace PonderingProgrammer.GridMath
         public int Max { get; }
         public int MaxExcl => Max + 1;
         public int Length => MaxExcl - Min;
-        public int Center => RealToGrid.ToGrid((Min + Max) / 2.0);
+        public int Center => GridConvert.ToGrid((Min + Max) / 2.0);
 
 
         public bool Contains(int value)

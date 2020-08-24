@@ -20,6 +20,15 @@ namespace PonderingProgrammer.GridMath.Tests
             Assert.Equal(expectedY, c.Y);
         }
 
+        [Fact]
+        public void TestMappingToReal()
+        {
+            var c = new GridCoordinatePair(0, -1);
+            var (x, y) = GridCoordinatePair.ToReal(c);
+            Assert.Equal(0.5, x);
+            Assert.Equal(-0.5, y);
+        }
+
         [Theory]
         [InlineData(3, 0, 3)]
         [InlineData(0, 3, 3)]
