@@ -53,9 +53,19 @@ namespace PonderingProgrammer.GridMath
         public int X { get; }
         public int Y { get; }
 
+        public int ManhattanDistance(GridCoordinatePair other)
+        {
+            return ManhattanDistance(other.X, other.Y);
+        }
+
         public int ManhattanDistance(int x, int y)
         {
             return Math.Abs(x - X) + Math.Abs(y - Y);
+        }
+
+        public int ChebyshevDistance(GridCoordinatePair other)
+        {
+            return ChebyshevDistance(other.X, other.Y);
         }
 
         public int ChebyshevDistance(int x, int y)
