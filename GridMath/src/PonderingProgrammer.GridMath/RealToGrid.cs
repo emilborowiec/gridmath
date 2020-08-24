@@ -21,5 +21,10 @@ namespace PonderingProgrammer.GridMath
         {
             return Convert.ToInt32(Math.Floor(value));
         }
+
+        public static double ToReal(int gridValue)
+        {
+            return gridValue + 0.5;
+        }
     }
 }

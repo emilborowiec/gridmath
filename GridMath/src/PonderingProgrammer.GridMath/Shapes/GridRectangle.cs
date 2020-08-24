@@ -1,75 +1,160 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 
 #endregion
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
-    public class GridRectangle : AbstractGridShape
+    public class GridRectangle : IGridRectangle
     {
-        public GridRectangle(GridBoundingBox rectangle)
+        public GridRectangle(int minX, int minY, int width, int height)
         {
-            Rectangle = rectangle;
+            _boundingBox = GridBoundingBox.FromSize(minX, minY, width, height);
+        }
+        
+        public GridRectangle(GridBoundingBox boundingBox)
+        {
+            _boundingBox = boundingBox;
         }
 
-        public GridBoundingBox Rectangle
+        private GridBoundingBox _boundingBox;
+
+        public GridBoundingBox BoundingBox => _boundingBox;
+        public IEnumerable<GridCoordinatePair> Interior
         {
-            get => BBox;
-            set
+            get
             {
-                BBox = value;
-                Update();
+                for (var y = _boundingBox.MinY; y < _boundingBox.MaxYExcl; y++)
+                for (var x = _boundingBox.MinX; x < _boundingBox.MaxXExcl; x++)
+                {
+                    yield return new GridCoordinatePair(x, y);
+                }
             }
         }
 
-        public override bool Overlaps(GridBoundingBox boundingBox)
+        public IEnumerable<GridCoordinatePair> Edge
         {
-            return Rectangle.Overlaps(boundingBox);
+            get
+            {
+                for (var x = _boundingBox.MinX; x < _boundingBox.MaxXExcl; x++)
+                {
+                    yield return new GridCoordinatePair(x, MinY);
+                }
+
+                for (var y = _boundingBox.MinY + 1; y < _boundingBox.MaxYExcl; y++)
+                {
+                    yield return new GridCoordinatePair(MaxX, y);
+                }
+
+                if (Height > 1)
+                {
+                    for (var x = _boundingBox.MaxX - 1; x >= _boundingBox.MinX; x--)
+                    {
+                        yield return new GridCoordinatePair(x, MaxY);
+                    }
+                }
+
+                if (Width > 1)
+                {
+                    for (var y = _boundingBox.MaxY - 1; y > _boundingBox.MinY; y--)
+                    {
+                        yield return new GridCoordinatePair(MinX, y);
+                    }
+                }
+            }
+        }
+        
+        public int MinX
+        {
+            get => _boundingBox.MinX;
+            set => _boundingBox = _boundingBox.SetMinX(value);
         }
 
-        public override void Translate(int x, int y)
+        public int MinY
         {
-            Rectangle = Rectangle.Translation(x, y);
+            get => _boundingBox.MinY;
+            set => _boundingBox = _boundingBox.SetMinY(value);
         }
 
-        public override void Rotate(Grid4Rotation rotation)
+        public int MaxX
+        {
+            get => _boundingBox.MaxX;
+            set => _boundingBox = _boundingBox.SetMaxX(value);
+        }
+
+        public int MaxY
+        {
+            get => _boundingBox.MaxY;
+            set => _boundingBox = _boundingBox.SetMaxY(value);
+        }
+
+        public int Width
+        {
+            get => _boundingBox.Width;
+            set => _boundingBox = _boundingBox.SetWidth(value);
+        }
+
+        public int Height
+        {
+            get => _boundingBox.Height;
+            set => _boundingBox = _boundingBox.SetHeight(value);
+        }
+
+        public GridCoordinatePair TopLeft
+        {
+            get => _boundingBox.TopLeft;
+            set => throw new NotImplementedException();
+        }
+
+        public bool Contains(GridCoordinatePair position)
+        {
+            return _boundingBox.Contains(position);
+        }
+
+        public bool Contains(int x, int y)
+        {
+            return _boundingBox.Contains(x, y);
+        }
+
+        public bool Overlaps(GridBoundingBox boundingBox)
+        {
+            return _boundingBox.Overlaps(boundingBox);
+        }
+
+        public void Translate(int x, int y)
+        {
+            _boundingBox = _boundingBox.Translation(x, y);
+        }
+
+        public void Rotate(Grid4Rotation rotation)
         {
             var topRight =
                 GridPolarCoordinates.FromGridCartesian(
-                    Rectangle.TopRight.Translation(
-                        -Rectangle.Center.X,
-                        -Rectangle.Center.Y));
+                    _boundingBox.TopRight.Translation(
+                        -_boundingBox.Center.X,
+                        -_boundingBox.Center.Y));
             var bottomLeft =
                 GridPolarCoordinates.FromGridCartesian(
-                    Rectangle.BottomLeft.Translation(-Rectangle.Center.X, -Rectangle.Center.Y));
+                    _boundingBox.BottomLeft.Translation(-_boundingBox.Center.X, -_boundingBox.Center.Y));
             var rotatedTopRight = topRight.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
             var rotatedBottomLeft = bottomLeft.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
-            Rectangle = rotation switch
+            _boundingBox = rotation switch
             {
                 Grid4Rotation.Ccw90 => GridBoundingBox.FromMinMax(
-                    rotatedTopRight.Translation(Rectangle.Center.X, Rectangle.Center.Y),
-                    rotatedBottomLeft.Translation(Rectangle.Center.X, Rectangle.Center.Y)),
+                    rotatedTopRight.Translation(_boundingBox.Center.X, _boundingBox.Center.Y),
+                    rotatedBottomLeft.Translation(_boundingBox.Center.X, _boundingBox.Center.Y)),
                 Grid4Rotation.Cw90 => GridBoundingBox.FromMinMax(
-                    rotatedBottomLeft.Translation(Rectangle.Center.X, Rectangle.Center.Y),
-                    rotatedTopRight.Translation(Rectangle.Center.X, Rectangle.Center.Y)),
+                    rotatedBottomLeft.Translation(_boundingBox.Center.X, _boundingBox.Center.Y),
+                    rotatedTopRight.Translation(_boundingBox.Center.X, _boundingBox.Center.Y)),
                 _ => throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null),
             };
         }
 
-        public override void Flip(GridAxis axis)
+        public void Flip(GridAxis axis)
         {
             // Done
-        }
-
-        protected override void Update()
-        {
-            Coords.Clear();
-            for (var y = Rectangle.MinY; y < Rectangle.MaxYExcl; y++)
-            for (var x = Rectangle.MinX; x < Rectangle.MaxXExcl; x++)
-            {
-                Coords.Add(new GridCoordinatePair(x, y));
-            }
         }
     }
 }

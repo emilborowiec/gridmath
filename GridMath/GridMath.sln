@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PonderingProgrammer.GridMat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PonderingProgrammer.GridMath.Tests", "tests\PonderingProgrammer.GridMath.Tests\PonderingProgrammer.GridMath.Tests.csproj", "{5F647702-026F-429D-BE04-92A3F6C2F6B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PonderingProgrammer.GridMath.Samples", "samples\PonderingProgrammer.GridMath.Samples\PonderingProgrammer.GridMath.Samples.csproj", "{7D0191A5-72A7-445D-95E2-70AF6825210F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{5F647702-026F-429D-BE04-92A3F6C2F6B2}.Release|x64.Build.0 = Release|Any CPU
 		{5F647702-026F-429D-BE04-92A3F6C2F6B2}.Release|x86.ActiveCfg = Release|Any CPU
 		{5F647702-026F-429D-BE04-92A3F6C2F6B2}.Release|x86.Build.0 = Release|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Debug|x64.Build.0 = Debug|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Debug|x86.Build.0 = Debug|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Release|x64.ActiveCfg = Release|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Release|x64.Build.0 = Release|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Release|x86.ActiveCfg = Release|Any CPU
+		{7D0191A5-72A7-445D-95E2-70AF6825210F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

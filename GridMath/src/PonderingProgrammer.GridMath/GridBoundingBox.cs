@@ -112,6 +112,26 @@ namespace PonderingProgrammer.GridMath
                        (XInterval.Overlaps(other.XInterval) || XInterval.Touches(other.XInterval)));
         }
 
+        public GridCoordinatePair NearestPoint(int x, int y)
+        {
+            var xDistance = XInterval.Distance(x);
+            var yDistance = YInterval.Distance(y);
+
+            if (xDistance == 0 && yDistance == 0) return new GridCoordinatePair(x, y);
+
+            if (xDistance == 0)
+            {
+                return new GridCoordinatePair(x, yDistance < 0 ? MinY : MaxY);
+            }
+
+            if (yDistance == 0)
+            {
+                return new GridCoordinatePair(xDistance < 0 ? MinX : MaxX, y);
+            }
+
+            return new GridCoordinatePair(xDistance < 0 ? MinX : MaxX, yDistance < 0 ? MinY : MaxY);
+        }
+
         public GridBoundingBox Translation(int x, int y)
         {
             return new GridBoundingBox(XInterval.Translation(x), YInterval.Translation(y));
@@ -148,6 +168,16 @@ namespace PonderingProgrammer.GridMath
         public GridBoundingBox SetMaxY(int value)
         {
             return new GridBoundingBox(XInterval, YInterval.SetMax(value));
+        }
+
+        public GridBoundingBox SetWidth(int value)
+        {
+            return GridBoundingBox.FromSize(MinX, MinY, value, Height);
+        }
+
+        public GridBoundingBox SetHeight(int value)
+        {
+            return GridBoundingBox.FromSize(MinX, MinY, Width, value);
         }
 
         public GridBoundingBox Relate(

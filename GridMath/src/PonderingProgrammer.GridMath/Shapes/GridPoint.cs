@@ -1,6 +1,8 @@
-﻿namespace PonderingProgrammer.GridMath.Shapes
+﻿using System.Collections.Generic;
+
+namespace PonderingProgrammer.GridMath.Shapes
 {
-    public class GridPoint : AbstractGridShape
+    public class GridPoint : IGridPoint
     {
         public GridPoint(GridCoordinatePair position)
         {
@@ -12,33 +14,41 @@
         public GridCoordinatePair Position
         {
             get => _position;
-            set
-            {
-                _position = value;
-                Update();
-            }
+            set => _position = value;
         }
+        
+        public IEnumerable<GridCoordinatePair> Interior => new[] {_position};
+        public IEnumerable<GridCoordinatePair> Edge => new[] {_position};
+        public GridBoundingBox BoundingBox => GridBoundingBox.FromMinMax(_position.X, _position.Y, _position.X, _position.Y);
 
-        public override void Translate(int x, int y)
+        public bool Contains(GridCoordinatePair position)
         {
-            Position = Position.Translation(x, y);
+            return _position == position;
         }
 
-        public override void Rotate(Grid4Rotation rotation)
+        public bool Contains(int x, int y)
+        {
+            return _position.X == x && _position.Y == y;
+        }
+
+        public bool Overlaps(GridBoundingBox boundingBox)
+        {
+            return boundingBox.Contains(_position);
+        }
+
+        public void Translate(int x, int y)
+        {
+            _position = _position.Translation(x, y);
+        }
+
+        public void Rotate(Grid4Rotation rotation)
         {
             // Done
         }
 
-        public override void Flip(GridAxis axis)
+        public void Flip(GridAxis axis)
         {
             // Done. Best code ever.
-        }
-
-        protected override void Update()
-        {
-            Coords.Clear();
-            Coords.Add(Position);
-            BBox = GridBoundingBox.FromMinMax(Position.X, Position.Y, Position.X, Position.Y);
         }
     }
 }

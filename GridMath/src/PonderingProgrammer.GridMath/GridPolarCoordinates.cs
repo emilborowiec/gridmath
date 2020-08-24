@@ -17,8 +17,10 @@ namespace PonderingProgrammer.GridMath
 
         public static GridPolarCoordinates FromGridCartesian(int x, int y)
         {
+            var realX = RealToGrid.ToReal(x);
+            var realY = RealToGrid.ToReal(y);
             var r = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-            var t = Math.Atan2(-y, x);
+            var t = Math.Atan2(-realY, realX);
             if (t < 0) t += TwoPi;
             return new GridPolarCoordinates(t, r);
         }
@@ -35,6 +37,7 @@ namespace PonderingProgrammer.GridMath
 
         public GridPolarCoordinates(double theta, double radius)
         {
+            if (theta < 0 || theta > 2 * Math.PI) throw new ArgumentOutOfRangeException(nameof(theta), theta, "Theta must be between 0 and 2*PI");
             Theta = theta;
             Radius = radius;
         }
