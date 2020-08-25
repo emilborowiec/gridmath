@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
@@ -13,11 +17,11 @@ namespace PonderingProgrammer.GridMath.Shapes
             if (_positions.Count == 0) throw new ArgumentException("MultiPoint cannot be empty");
         }
 
-        private List<GridCoordinatePair> _positions;
+        private readonly List<GridCoordinatePair> _positions;
 
         public IEnumerable<GridCoordinatePair> Interior => _positions.AsReadOnly();
         public IEnumerable<GridCoordinatePair> Edge => _positions.AsReadOnly();
-        
+
         public GridBoundingBox BoundingBox
         {
             get

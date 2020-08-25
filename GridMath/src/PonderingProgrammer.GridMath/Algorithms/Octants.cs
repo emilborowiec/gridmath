@@ -1,4 +1,8 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Algorithms
 {
@@ -14,28 +18,22 @@ namespace PonderingProgrammer.GridMath.Algorithms
             double adx = Math.Abs(dx);
             double ady = Math.Abs(dy);
 
-            if (dx >= 0)    // right
+            if (dx >= 0) // right
             {
-                if (dy >= 0)    // down-right
+                if (dy >= 0) // down-right
                 {
                     return adx >= ady ? Octant.Zero : Octant.One;
                 }
-                else // dy < 0  up-right
-                {
-                    return adx >= ady ? Octant.Seven : Octant.Six;
-                }
+
+                return adx >= ady ? Octant.Seven : Octant.Six;
             }
-            else // dx < 0  left
+
+            if (dy >= 0) // down-left
             {
-                if (dy >= 0) // down-left
-                {
-                    return adx >= ady ? Octant.Three : Octant.Two;
-                }
-                else // dy < 0  up-left
-                {
-                    return adx >= ady ? Octant.Four : Octant.Five;
-                }
+                return adx >= ady ? Octant.Three : Octant.Two;
             }
+
+            return adx >= ady ? Octant.Four : Octant.Five;
         }
     }
 }

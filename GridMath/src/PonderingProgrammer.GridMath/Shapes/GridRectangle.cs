@@ -13,7 +13,7 @@ namespace PonderingProgrammer.GridMath.Shapes
         {
             _boundingBox = GridBoundingBox.FromSize(minX, minY, width, height);
         }
-        
+
         public GridRectangle(GridBoundingBox boundingBox)
         {
             _boundingBox = boundingBox;
@@ -22,6 +22,7 @@ namespace PonderingProgrammer.GridMath.Shapes
         private GridBoundingBox _boundingBox;
 
         public GridBoundingBox BoundingBox => _boundingBox;
+
         public IEnumerable<GridCoordinatePair> Interior
         {
             get
@@ -65,7 +66,7 @@ namespace PonderingProgrammer.GridMath.Shapes
                 }
             }
         }
-        
+
         public int MinX
         {
             get => _boundingBox.MinX;

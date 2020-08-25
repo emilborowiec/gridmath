@@ -172,12 +172,12 @@ namespace PonderingProgrammer.GridMath
 
         public GridBoundingBox SetWidth(int value)
         {
-            return GridBoundingBox.FromSize(MinX, MinY, value, Height);
+            return FromSize(MinX, MinY, value, Height);
         }
 
         public GridBoundingBox SetHeight(int value)
         {
-            return GridBoundingBox.FromSize(MinX, MinY, Width, value);
+            return FromSize(MinX, MinY, Width, value);
         }
 
         public GridBoundingBox Relate(

@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Samples
 {

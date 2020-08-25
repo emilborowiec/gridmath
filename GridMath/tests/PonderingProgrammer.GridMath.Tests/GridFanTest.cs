@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿#region
+
+using System.Linq;
 using PonderingProgrammer.GridMath.Shapes;
 using Xunit;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Tests
 {

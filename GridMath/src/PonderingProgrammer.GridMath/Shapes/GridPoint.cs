@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
@@ -11,15 +15,17 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         private GridCoordinatePair _position;
 
+        public IEnumerable<GridCoordinatePair> Interior => new[] {_position};
+        public IEnumerable<GridCoordinatePair> Edge => new[] {_position};
+
+        public GridBoundingBox BoundingBox =>
+            GridBoundingBox.FromMinMax(_position.X, _position.Y, _position.X, _position.Y);
+
         public GridCoordinatePair Position
         {
             get => _position;
             set => _position = value;
         }
-        
-        public IEnumerable<GridCoordinatePair> Interior => new[] {_position};
-        public IEnumerable<GridCoordinatePair> Edge => new[] {_position};
-        public GridBoundingBox BoundingBox => GridBoundingBox.FromMinMax(_position.X, _position.Y, _position.X, _position.Y);
 
         public bool Contains(GridCoordinatePair position)
         {

@@ -11,6 +11,16 @@ namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridFan : IGridFan
     {
+        private static GridCoordinatePair FindIntersection(
+            ICollection<GridCoordinatePair> circle,
+            ICollection<GridCoordinatePair> arm)
+        {
+            var same = arm.Where(circle.Contains).ToArray();
+            if (same.Length > 0) return same[0];
+            var close = arm.First(c => circle.Any(cc => cc.ManhattanDistance(c) <= 1));
+            return close;
+        }
+
         public GridFan(GridCoordinatePair origin, int radius, Grid8Direction direction)
         {
             if (radius < 1) throw new ArgumentOutOfRangeException(nameof(radius), radius, null);
@@ -31,7 +41,8 @@ namespace PonderingProgrammer.GridMath.Shapes
                 if (_radius == 1) return Enumerable.Empty<GridCoordinatePair>();
                 var edges = Edge.ToArray();
                 var floodStart = new GridDirectionCoordinates(_direction, 1).ToGridCartesian();
-                var fill = FloodFill.GetFloodFillCoordinates(_origin.Translation(floodStart.X, floodStart.Y), edges, BoundingBox);
+                var fill = FloodFill.GetFloodFillCoordinates(
+                    _origin.Translation(floodStart.X, floodStart.Y), edges, BoundingBox);
                 var interior = new List<GridCoordinatePair>(edges);
                 interior.AddRange(fill);
                 return interior;
@@ -245,16 +256,6 @@ namespace PonderingProgrammer.GridMath.Shapes
             var arm1EndCart = arm1End.ToGridCartesian().Translation(_origin.X, _origin.Y);
             var arm2EndCart = arm2End.ToGridCartesian().Translation(_origin.X, _origin.Y);
             return (arm1EndCart, arm2EndCart);
-        }
-
-        private GridCoordinatePair FindIntersection(
-            IEnumerable<GridCoordinatePair> circle,
-            IEnumerable<GridCoordinatePair> arm)
-        {
-            var same = arm.Where(circle.Contains).ToArray();
-            if (same.Length > 0) return same[0];
-            var close = arm.First(c => circle.Any(cc => cc.ManhattanDistance(c) <= 1));
-            return close;
         }
     }
 }

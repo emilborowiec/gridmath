@@ -18,8 +18,6 @@ namespace PonderingProgrammer.GridMath
         public const double Degree270 = Math.PI * 1.5;
         public const double Degree315 = Math.PI * 1.75;
 
-        private const double Divider = Degree90 * 0.25;
-
         public const double Right = Degree0;
         public const double BottomRight = Degree45;
         public const double Bottom = Degree90;
@@ -28,6 +26,8 @@ namespace PonderingProgrammer.GridMath
         public const double TopLeft = Degree225;
         public const double Top = Degree270;
         public const double TopRight = Degree315;
+
+        private const double Divider = Degree90 * 0.25;
 
         public static double DirectionToAngle(Grid4Direction direction)
         {
@@ -70,15 +70,15 @@ namespace PonderingProgrammer.GridMath
         public static Grid8Direction AngleToDirection8(double angle)
         {
             angle = WrapAngle(angle);
-            
+
             if (angle >= TopRight + Divider || angle < BottomRight - Divider) return Grid8Direction.Right;
-            if (angle >= Top + Divider) return Grid8Direction.TopRight; 
-            if (angle >= TopLeft + Divider) return Grid8Direction.Top; 
-            if (angle >= Left + Divider) return Grid8Direction.TopLeft; 
-            if (angle >= BottomLeft + Divider) return Grid8Direction.Left; 
-            if (angle >= Bottom + Divider) return Grid8Direction.BottomLeft; 
-            if (angle >= BottomRight + Divider) return Grid8Direction.Bottom; 
-            return Grid8Direction.BottomRight; 
+            if (angle >= Top + Divider) return Grid8Direction.TopRight;
+            if (angle >= TopLeft + Divider) return Grid8Direction.Top;
+            if (angle >= Left + Divider) return Grid8Direction.TopLeft;
+            if (angle >= BottomLeft + Divider) return Grid8Direction.Left;
+            if (angle >= Bottom + Divider) return Grid8Direction.BottomLeft;
+            if (angle >= BottomRight + Divider) return Grid8Direction.Bottom;
+            return Grid8Direction.BottomRight;
         }
 
         public static Grid4Direction Rotate(Grid4Direction direction, GridRotation rotation)

@@ -1,7 +1,7 @@
 ﻿namespace PonderingProgrammer.GridMath.Shapes
 {
     /// <summary>
-    /// Axis-aligned segment in grid coordinates.
+    ///     Axis-aligned segment in grid coordinates.
     /// </summary>
     public interface IGridAASegment : IGridSegment
     {

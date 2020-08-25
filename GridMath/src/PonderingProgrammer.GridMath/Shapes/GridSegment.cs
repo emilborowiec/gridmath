@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PonderingProgrammer.GridMath.Algorithms;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
@@ -16,6 +20,16 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         private GridCoordinatePair _a;
         private GridCoordinatePair _b;
+
+        public int Dx => _b.X - _a.Y;
+        public int Dy => _b.Y - _a.Y;
+
+        public IEnumerable<GridCoordinatePair> Interior => Bresenham.PlotLine(A.X, A.Y, B.X, B.Y);
+
+        public IEnumerable<GridCoordinatePair> Edge => Interior;
+
+        public GridBoundingBox BoundingBox =>
+            GridBoundingBox.FromMinMax(Math.Min(A.X, B.X), Math.Min(A.Y, B.Y), Math.Max(A.X, B.X), Math.Max(A.Y, B.Y));
 
         public GridCoordinatePair A
         {
@@ -37,15 +51,6 @@ namespace PonderingProgrammer.GridMath.Shapes
             }
         }
 
-        public int Dx => _b.X - _a.Y;
-        public int Dy => _b.Y - _a.Y;
-
-        public IEnumerable<GridCoordinatePair> Interior => Bresenham.PlotLine(A.X, A.Y, B.X, B.Y);
-
-        public IEnumerable<GridCoordinatePair> Edge => Interior;
-        
-        public GridBoundingBox BoundingBox => GridBoundingBox.FromMinMax(Math.Min(A.X, B.X), Math.Min(A.Y, B.Y), Math.Max(A.X, B.X), Math.Max(A.Y, B.Y));
-        
         public bool Contains(GridCoordinatePair position)
         {
             return Interior.Contains(position);

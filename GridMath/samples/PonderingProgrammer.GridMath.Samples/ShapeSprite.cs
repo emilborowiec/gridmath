@@ -1,17 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame;
 using PonderingProgrammer.GridMath.Shapes;
 
+#endregion
+
 namespace PonderingProgrammer.GridMath.Samples
 {
     public class ShapeSprite
     {
-        private readonly IGridShape _shape;
-        private readonly int _scale;
-        private Texture2D _tex;
-        
         public ShapeSprite(IGridShape shape, int scale, GraphicsDevice gd)
         {
             _shape = shape;
@@ -19,15 +19,21 @@ namespace PonderingProgrammer.GridMath.Samples
             UpdateTexture(gd);
         }
 
+        private readonly IGridShape _shape;
+        private readonly int _scale;
+        private Texture2D _tex;
+
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (spriteBatch == null) throw new ArgumentNullException(nameof(spriteBatch));
+            
             var bb = _shape.BoundingBox;
             var bbRect = new Rectangle(bb.MinX * _scale, bb.MinY * _scale, bb.Width * _scale, bb.Height * _scale);
             spriteBatch.Draw(_tex, bbRect, Color.White);
         }
 
         /// <summary>
-        /// Expensive. Don't call in game loop.
+        ///     Expensive. Don't call in game loop.
         /// </summary>
         /// <param name="gd"></param>
         /// <exception cref="ArgumentNullException"></exception>
@@ -42,11 +48,14 @@ namespace PonderingProgrammer.GridMath.Samples
             spriteBatch.Begin();
             foreach (var c in _shape.Interior)
             {
-                spriteBatch.FillRectangle((c.X - bb.MinX) * _scale, (c.Y - bb.MinY) * _scale, _scale, _scale, Color.Aqua);
+                spriteBatch.FillRectangle(
+                    (c.X - bb.MinX) * _scale, (c.Y - bb.MinY) * _scale, _scale, _scale, Color.Aqua);
             }
+
             foreach (var c in _shape.Edge)
             {
-                spriteBatch.FillRectangle((c.X - bb.MinX) * _scale, (c.Y - bb.MinY) * _scale, _scale, _scale, Color.Blue);
+                spriteBatch.FillRectangle(
+                    (c.X - bb.MinX) * _scale, (c.Y - bb.MinY) * _scale, _scale, _scale, Color.Blue);
             }
 
             var bbRect = new Rectangle(0, 0, (bb.Width * _scale) - 1, (bb.Height * _scale) - 1);

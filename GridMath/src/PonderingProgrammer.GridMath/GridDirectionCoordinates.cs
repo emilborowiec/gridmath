@@ -1,12 +1,26 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath
 {
     /// <summary>
-    /// Simplified polar coordinates on grid that uses Direction instead of an angle
+    ///     Simplified polar coordinates on grid that uses Direction instead of an angle
     /// </summary>
     public readonly struct GridDirectionCoordinates : IEquatable<GridDirectionCoordinates>
     {
+        public static bool operator ==(GridDirectionCoordinates left, GridDirectionCoordinates right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GridDirectionCoordinates left, GridDirectionCoordinates right)
+        {
+            return !(left == right);
+        }
+
         public GridDirectionCoordinates(Grid8Direction direction, int radius)
         {
             Direction = direction;
@@ -40,16 +54,6 @@ namespace PonderingProgrammer.GridMath
         public override int GetHashCode()
         {
             return HashCode.Combine((int) Direction, Radius);
-        }
-
-        public static bool operator ==(GridDirectionCoordinates left, GridDirectionCoordinates right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(GridDirectionCoordinates left, GridDirectionCoordinates right)
-        {
-            return !(left == right);
         }
 
         public bool Equals(GridDirectionCoordinates other)

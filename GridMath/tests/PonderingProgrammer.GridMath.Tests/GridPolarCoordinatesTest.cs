@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using Xunit;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Tests
 {

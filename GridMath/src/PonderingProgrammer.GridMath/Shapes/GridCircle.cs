@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PonderingProgrammer.GridMath.Algorithms;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Shapes
 {

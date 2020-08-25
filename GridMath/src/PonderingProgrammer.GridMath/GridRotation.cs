@@ -1,9 +1,23 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath
 {
-    public readonly struct GridRotation : System.IEquatable<GridRotation>
+    public readonly struct GridRotation : IEquatable<GridRotation>
     {
+        public static bool operator ==(GridRotation left, GridRotation right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GridRotation left, GridRotation right)
+        {
+            return !(left == right);
+        }
+
         public GridRotation(int ticks, bool counterClockWise = false)
         {
             Ticks = ticks;
@@ -15,7 +29,7 @@ namespace PonderingProgrammer.GridMath
 
         public double ToRadians(int subdivision)
         {
-            return CounterClockWise 
+            return CounterClockWise
                 ? Directions.TwoPi - ((Directions.TwoPi * Ticks) / subdivision)
                 : (Directions.TwoPi * Ticks) / subdivision;
         }
@@ -28,16 +42,6 @@ namespace PonderingProgrammer.GridMath
         public override int GetHashCode()
         {
             return HashCode.Combine(CounterClockWise, Ticks);
-        }
-
-        public static bool operator ==(GridRotation left, GridRotation right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(GridRotation left, GridRotation right)
-        {
-            return !(left == right);
         }
 
         public bool Equals(GridRotation other)

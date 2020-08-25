@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Shapes
 {
@@ -16,6 +20,30 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         private GridCoordinatePair _a;
         private GridCoordinatePair _b;
+
+        public int Dx => _b.X - _a.Y;
+        public int Dy => _b.Y - _a.Y;
+
+        public GridAxis Axis => A.X == B.X ? GridAxis.Vertical : GridAxis.Horizontal;
+
+        public IEnumerable<GridCoordinatePair> Interior
+        {
+            get
+            {
+                var min = Axis == GridAxis.Horizontal ? Math.Min(A.X, B.X) : Math.Min(A.Y, B.Y);
+                var max = Axis == GridAxis.Horizontal ? Math.Max(A.X, B.X) : Math.Max(A.Y, B.Y);
+                return Enumerable.Range(min, (max - min) + 1)
+                                 .Select(
+                                     i => Axis == GridAxis.Horizontal
+                                         ? new GridCoordinatePair(i, A.Y)
+                                         : new GridCoordinatePair(A.X, i));
+            }
+        }
+
+        public IEnumerable<GridCoordinatePair> Edge => Interior;
+
+        public GridBoundingBox BoundingBox =>
+            GridBoundingBox.FromMinMax(Math.Min(A.X, B.X), Math.Min(A.Y, B.Y), Math.Max(A.X, B.X), Math.Max(A.Y, B.Y));
 
         public GridCoordinatePair A
         {
@@ -41,29 +69,6 @@ namespace PonderingProgrammer.GridMath.Shapes
             }
         }
 
-        public int Dx => _b.X - _a.Y;
-        public int Dy => _b.Y - _a.Y;
-
-        public GridAxis Axis => A.X == B.X ? GridAxis.Vertical : GridAxis.Horizontal;
-
-        public IEnumerable<GridCoordinatePair> Interior
-        {
-            get
-            {
-                var min = Axis == GridAxis.Horizontal ? Math.Min(A.X, B.X) : Math.Min(A.Y, B.Y);
-                var max = Axis == GridAxis.Horizontal ? Math.Max(A.X, B.X) : Math.Max(A.Y, B.Y);
-                return Enumerable.Range(min, (max - min) + 1)
-                                 .Select(
-                                     i => Axis == GridAxis.Horizontal
-                                         ? new GridCoordinatePair(i, A.Y)
-                                         : new GridCoordinatePair(A.X, i));
-            }
-        }
-
-        public IEnumerable<GridCoordinatePair> Edge => Interior;
-        
-        public GridBoundingBox BoundingBox => GridBoundingBox.FromMinMax(Math.Min(A.X, B.X), Math.Min(A.Y, B.Y), Math.Max(A.X, B.X), Math.Max(A.Y, B.Y));
-        
         public bool Contains(GridCoordinatePair position)
         {
             return Contains(position.X, position.Y);
@@ -89,7 +94,6 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         public void Rotate(GridRotation rotation)
         {
-            var ticks = rotation.Ticks % 4;
             var polarB = GridPolarCoordinates.FromGridCartesian(Dx, Dy);
             polarB = polarB.Rotation(rotation.ToRadians(4));
             _b = polarB.ToGridCartesian().Translation(_a.X, _a.Y);
@@ -102,8 +106,8 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         private GridInterval GetIntervalOnAxis()
         {
-            return Axis == GridAxis.Horizontal 
-                ? new GridInterval(Math.Min(A.X, B.X), Math.Max(A.X, B.X)) 
+            return Axis == GridAxis.Horizontal
+                ? new GridInterval(Math.Min(A.X, B.X), Math.Max(A.X, B.X))
                 : new GridInterval(Math.Min(A.Y, B.Y), Math.Max(A.Y, B.Y));
         }
     }

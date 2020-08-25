@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#endregion
 
 namespace PonderingProgrammer.GridMath.Algorithms
 {
@@ -13,11 +17,14 @@ namespace PonderingProgrammer.GridMath.Algorithms
             if (dx == 0 && dy == 0) return new[] {new GridCoordinatePair(x1, y1)};
             if (dy == 0)
             {
-                return Enumerable.Range(Math.Min(x1, x2), Math.Abs(x2 - x1) + 1).Select(x => new GridCoordinatePair(x, y1));
+                return Enumerable.Range(Math.Min(x1, x2), Math.Abs(x2 - x1) + 1)
+                                 .Select(x => new GridCoordinatePair(x, y1));
             }
+
             if (dx == 0)
             {
-                return Enumerable.Range(Math.Min(y1, y2), Math.Abs(y2 - y1) + 1).Select(y => new GridCoordinatePair(x1, y));
+                return Enumerable.Range(Math.Min(y1, y2), Math.Abs(y2 - y1) + 1)
+                                 .Select(y => new GridCoordinatePair(x1, y));
             }
 
             var octant = Octants.GetOctant(dx, dy);
@@ -41,34 +48,34 @@ namespace PonderingProgrammer.GridMath.Algorithms
         {
             if (r == 0) return new[] {new GridCoordinatePair(xc, yc)};
             var x = 0;
-            var y = r; 
-            var d = 3 - (2 * r); 
-            var plot = new List<GridCoordinatePair>(); 
-            plot.AddRange(PlotOnAllOctants(xc, yc, x, y)); 
-            while (y >= x) 
-            { 
+            var y = r;
+            var d = 3 - (2 * r);
+            var plot = new List<GridCoordinatePair>();
+            plot.AddRange(PlotOnAllOctants(xc, yc, x, y));
+            while (y >= x)
+            {
                 // for each pixel we will 
                 // draw all eight pixels 
-                x++; 
+                x++;
                 // check for decision parameter 
                 // and correspondingly  
                 // update d, x, y 
-                if (d > 0) 
-                { 
-                    y--;  
-                    d = d + (4 * (x - y)) + 10; 
-                } 
+                if (d > 0)
+                {
+                    y--;
+                    d = d + (4 * (x - y)) + 10;
+                }
                 else
                 {
                     d = d + (4 * x) + 6;
                 }
 
-                plot.AddRange(PlotOnAllOctants(xc, yc, x, y)); 
+                plot.AddRange(PlotOnAllOctants(xc, yc, x, y));
             }
 
             return plot;
         }
-        
+
         private static IEnumerable<GridCoordinatePair> LowLine(int x1, int y1, int x2, int y2)
         {
             var dx = x2 - x1;
@@ -79,6 +86,7 @@ namespace PonderingProgrammer.GridMath.Algorithms
                 sign = -1;
                 dy = -dy;
             }
+
             double decision = (2 * dy) - dx;
             var y = y1;
 
@@ -93,8 +101,8 @@ namespace PonderingProgrammer.GridMath.Algorithms
 
                 decision += 2 * dy;
             }
-        }       
-        
+        }
+
         private static IEnumerable<GridCoordinatePair> HighLine(int x1, int y1, int x2, int y2)
         {
             var dx = x2 - x1;
@@ -121,17 +129,17 @@ namespace PonderingProgrammer.GridMath.Algorithms
                 decision += 2 * dx;
             }
         }
-        
-        private static IEnumerable<GridCoordinatePair> PlotOnAllOctants(int xc, int yc, int x, int y) 
-        { 
-            yield return new GridCoordinatePair(xc+x, yc+y); 
-            yield return new GridCoordinatePair(xc-x, yc+y); 
-            yield return new GridCoordinatePair(xc+x, yc-y); 
-            yield return new GridCoordinatePair(xc-x, yc-y); 
-            yield return new GridCoordinatePair(xc+y, yc+x); 
-            yield return new GridCoordinatePair(xc-y, yc+x); 
-            yield return new GridCoordinatePair(xc+y, yc-x); 
-            yield return new GridCoordinatePair(xc-y, yc-x); 
-        } 
+
+        private static IEnumerable<GridCoordinatePair> PlotOnAllOctants(int xc, int yc, int x, int y)
+        {
+            yield return new GridCoordinatePair(xc + x, yc + y);
+            yield return new GridCoordinatePair(xc - x, yc + y);
+            yield return new GridCoordinatePair(xc + x, yc - y);
+            yield return new GridCoordinatePair(xc - x, yc - y);
+            yield return new GridCoordinatePair(xc + y, yc + x);
+            yield return new GridCoordinatePair(xc - y, yc + x);
+            yield return new GridCoordinatePair(xc + y, yc - x);
+            yield return new GridCoordinatePair(xc - y, yc - x);
+        }
     }
 }
