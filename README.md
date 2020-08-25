@@ -18,6 +18,50 @@ It also allows to take a point from real coordinate space and tell on which poin
 
 GridMath library currently supports only Square Grids. Support for Hex Grids will come in later versions.
 
+## Features
+
+**Real To Grid Conversions**
+
+- Real number to grid number.
+- Grid number to real number.
+
+**Grid Coordinates**
+
+- Read-only value type for storing Grid Coordinates.
+- Mapping to and from cartesian plane coordinates.
+- Measuring distance (Manhattan, Chebyshev, Euclidean).
+- Translation (with grid coordinates; *todo: with grid polar and grid direction coordinates*).
+
+**Grid Polar Coordinates**
+
+- Read-only value type for storing Grid Polar Coordinates.
+- 
+
+**Grid Directions and Rotations**
+
+- 
+
+**Grid Direction Coordinates**
+
+- 
+
+**Grid Intervals**
+
+- 
+
+**Grid Bounding Boxes**
+
+- 
+
+**Rasterization**
+
+- 
+
+**Grid Shapes**
+
+- 
+
+
 ## Real to Grid Conversion
 
 
