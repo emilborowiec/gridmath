@@ -8,16 +8,9 @@ namespace PonderingProgrammer.GridMath.Samples
 {
     public class Button
     {
-        private readonly string _text;
-        private readonly SpriteFont _font;
-        private readonly Action _onClick;
-        private readonly SpriteBatch _spriteBatch;
-        private Rectangle _rect;
-        private MouseState _oldState;
-
         public Button(int x, int y, string text, SpriteFont font, Action onClick, SpriteBatch spriteBatch)
         {
-            _text = text;
+            Text = text;
             _font = font;
             _onClick = onClick;
             _spriteBatch = spriteBatch;
@@ -25,10 +18,18 @@ namespace PonderingProgrammer.GridMath.Samples
             _rect = new Rectangle(x, y, (int) w, (int) h);
         }
 
+        private readonly SpriteFont _font;
+        private readonly Action _onClick;
+        private readonly SpriteBatch _spriteBatch;
+        private Rectangle _rect;
+        private MouseState _oldState;
+
+        public string Text { get; }
+
         public void Update()
         {
             var mouseState = Mouse.GetState();
-            if(mouseState.LeftButton == ButtonState.Pressed && _oldState.LeftButton == ButtonState.Released)
+            if (mouseState.LeftButton == ButtonState.Pressed && _oldState.LeftButton == ButtonState.Released)
             {
                 if (_rect.Contains(mouseState.Position))
                 {
@@ -39,10 +40,10 @@ namespace PonderingProgrammer.GridMath.Samples
             _oldState = mouseState;
         }
 
-        public void Draw()
+        public void Draw(bool toggled)
         {
-            _spriteBatch.FillRectangle(_rect, Color.White);
-            _spriteBatch.DrawString(_font, _text, _rect.Location.ToVector2(), Color.Black);
+            _spriteBatch.FillRectangle(_rect, toggled ? Color.Yellow : Color.White);
+            _spriteBatch.DrawString(_font, Text, _rect.Location.ToVector2(), Color.Black);
         }
     }
 }

@@ -13,13 +13,16 @@ namespace PonderingProgrammer.GridMath.Shapes
     {
         public GridFan(GridCoordinatePair origin, int radius, Grid8Direction direction)
         {
+            if (radius < 1) throw new ArgumentOutOfRangeException(nameof(radius), radius, null);
+
             _origin = origin;
-            Radius = radius;
+            _radius = radius;
             _direction = direction;
         }
 
         private Grid8Direction _direction;
         private GridCoordinatePair _origin;
+        private int _radius;
 
         public IEnumerable<GridCoordinatePair> Interior
         {
@@ -132,7 +135,15 @@ namespace PonderingProgrammer.GridMath.Shapes
             set => _direction = value;
         }
 
-        public int Radius { get; set; }
+        public int Radius
+        {
+            get => _radius;
+            set
+            {
+                if (value < 1) return;
+                _radius = value;
+            }
+        }
 
         public bool Contains(GridCoordinatePair position)
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using PonderingProgrammer.GridMath.Algorithms;
 
 namespace PonderingProgrammer.GridMath.Shapes
@@ -10,30 +9,14 @@ namespace PonderingProgrammer.GridMath.Shapes
     {
         public GridCircle(GridCoordinatePair center, int radius)
         {
+            if (radius < 1) throw new ArgumentOutOfRangeException(nameof(radius), radius, null);
+
             _center = center;
             _radius = radius;
         }
 
         private GridCoordinatePair _center;
         private int _radius;
-
-        public GridCoordinatePair Center
-        {
-            get => _center;
-            set
-            {
-                _center = value;
-            }
-        }
-
-        public int Radius
-        {
-            get => _radius;
-            set
-            {
-                _radius = value;
-            }
-        }
 
         public IEnumerable<GridCoordinatePair> Interior
         {
@@ -53,6 +36,22 @@ namespace PonderingProgrammer.GridMath.Shapes
             GridBoundingBox.FromMinMax(
                 _center.X - _radius, _center.Y - _radius, _center.X + _radius,
                 _center.Y + _radius);
+
+        public GridCoordinatePair Center
+        {
+            get => _center;
+            set => _center = value;
+        }
+
+        public int Radius
+        {
+            get => _radius;
+            set
+            {
+                if (value < 1) return;
+                _radius = value;
+            }
+        }
 
 
         public bool Contains(GridCoordinatePair position)
