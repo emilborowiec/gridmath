@@ -28,8 +28,10 @@ namespace PonderingProgrammer.GridMath.Shapes
         {
             get
             {
+                if (_radius == 1) return Enumerable.Empty<GridCoordinatePair>();
                 var edges = Edge.ToArray();
-                var fill = FloodFill.GetFloodFillCoordinates(BoundingBox.Center, edges, BoundingBox);
+                var floodStart = new GridDirectionCoordinates(_direction, 1).ToGridCartesian();
+                var fill = FloodFill.GetFloodFillCoordinates(_origin.Translation(floodStart.X, floodStart.Y), edges, BoundingBox);
                 var interior = new List<GridCoordinatePair>(edges);
                 interior.AddRange(fill);
                 return interior;
