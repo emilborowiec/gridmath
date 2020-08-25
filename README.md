@@ -2,14 +2,29 @@
 
 > This documentation is very much a work in progress. As is the whole library.
 
-GridMath is a lightweight library for creating and manipulating geometrical shapes 
-on two-dimensional grids.
+GridMath is a lightweight library for applications relying heavily on grid geometry. 
+Example candidates include pixel art programs, certain kinds of games and procedural map generation libraries.
+
+## The Grid
+
+There are many kinds of grids. Two most commonly found in graphical applications are 
+Square Grids and Hex Grids. In general, we can define any grid as a discrete coordinate space.
+What makes grids different, however, are the operations on their coordinates. 
+How do we determine adjacency? How do we measure distance? And most importantly,
+How do we transform grid coordinates to cartesian coordinate plane and back. 
+
+It is this mapping transformation that determines presentation of the grid on screen.
+It also allows to take a point from real coordinate space and tell on which point of the grid it lands. 
+
+GridMath library currently supports only Square Grids. Support for Hex Grids will come in later versions.
+
+## Real to Grid Conversion
+
+
+
+
 
 ## Grid coordinate system
-
-Grids are spaces of integer coordinates. 
-This library only supports operations one and two-dimensional grids, 
-but some one-dimension concepts like intervals can find universal use.
 
 GridMath uses int to model a single grid coordinate.
 
