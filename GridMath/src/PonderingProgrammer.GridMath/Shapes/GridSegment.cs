@@ -37,6 +37,9 @@ namespace PonderingProgrammer.GridMath.Shapes
             }
         }
 
+        public int Dx => _b.X - _a.Y;
+        public int Dy => _b.Y - _a.Y;
+
         public IEnumerable<GridCoordinatePair> Interior => Bresenham.PlotLine(A.X, A.Y, B.X, B.Y);
 
         public IEnumerable<GridCoordinatePair> Edge => Interior;
@@ -64,26 +67,17 @@ namespace PonderingProgrammer.GridMath.Shapes
             _b = B.Translation(x, y);
         }
 
-        public void Rotate(Grid4Rotation rotation)
+        public void Rotate(GridRotation rotation)
         {
-            throw new System.NotImplementedException();
+            var ticks = rotation.Ticks % 12;
+            var polarB = GridPolarCoordinates.FromGridCartesian(Dx, Dy);
+            polarB = polarB.Rotation(rotation.ToRadians(12));
+            _b = polarB.ToGridCartesian().Translation(_a.X, _a.Y);
         }
 
         public void Flip(GridAxis axis)
         {
-            switch (axis)
-            {
-                case GridAxis.Horizontal:
-                    _a = new GridCoordinatePair(_a.X, _b.Y);
-                    _b = new GridCoordinatePair(_b.X, _a.Y);
-                    break;
-                case GridAxis.Vertical:
-                    _a = new GridCoordinatePair(_b.X, _a.Y);
-                    _b = new GridCoordinatePair(_a.X, _b.Y);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(axis), axis, null);
-            }
+            Rotate(new GridRotation(6));
         }
     }
 }

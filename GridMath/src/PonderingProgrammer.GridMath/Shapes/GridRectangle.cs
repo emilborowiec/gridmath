@@ -128,7 +128,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             _boundingBox = _boundingBox.Translation(x, y);
         }
 
-        public void Rotate(Grid4Rotation rotation)
+        public void Rotate(GridRotation rotation)
         {
             var topRight =
                 GridPolarCoordinates.FromGridCartesian(
@@ -138,18 +138,11 @@ namespace PonderingProgrammer.GridMath.Shapes
             var bottomLeft =
                 GridPolarCoordinates.FromGridCartesian(
                     _boundingBox.BottomLeft.Translation(-_boundingBox.Center.X, -_boundingBox.Center.Y));
-            var rotatedTopRight = topRight.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
-            var rotatedBottomLeft = bottomLeft.Rotation(Directions.Grid4RotationToAngle(rotation)).ToGridCartesian();
-            _boundingBox = rotation switch
-            {
-                Grid4Rotation.Ccw90 => GridBoundingBox.FromMinMax(
-                    rotatedTopRight.Translation(_boundingBox.Center.X, _boundingBox.Center.Y),
-                    rotatedBottomLeft.Translation(_boundingBox.Center.X, _boundingBox.Center.Y)),
-                Grid4Rotation.Cw90 => GridBoundingBox.FromMinMax(
-                    rotatedBottomLeft.Translation(_boundingBox.Center.X, _boundingBox.Center.Y),
-                    rotatedTopRight.Translation(_boundingBox.Center.X, _boundingBox.Center.Y)),
-                _ => throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null),
-            };
+            var rotatedTopRight = topRight.Rotation(rotation.ToRadians(4)).ToGridCartesian();
+            var rotatedBottomLeft = bottomLeft.Rotation(rotation.ToRadians(4)).ToGridCartesian();
+            _boundingBox = GridBoundingBox.FromMinMax(
+                rotatedTopRight.Translation(_boundingBox.Center.X, _boundingBox.Center.Y),
+                rotatedBottomLeft.Translation(_boundingBox.Center.X, _boundingBox.Center.Y));
         }
 
         public void Flip(GridAxis axis)

@@ -26,7 +26,7 @@ namespace PonderingProgrammer.GridMath.Shapes
         bool Contains(int x, int y);
         bool Overlaps(GridBoundingBox boundingBox);
         void Translate(int x, int y);
-        void Rotate(Grid4Rotation rotation);
+        void Rotate(GridRotation rotation);
         void Flip(GridAxis axis);
     }
 }

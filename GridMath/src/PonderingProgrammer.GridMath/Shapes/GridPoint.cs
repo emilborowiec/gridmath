@@ -41,7 +41,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             _position = _position.Translation(x, y);
         }
 
-        public void Rotate(Grid4Rotation rotation)
+        public void Rotate(GridRotation rotation)
         {
             // Done
         }

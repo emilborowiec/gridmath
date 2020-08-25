@@ -41,6 +41,9 @@ namespace PonderingProgrammer.GridMath.Shapes
             }
         }
 
+        public int Dx => _b.X - _a.Y;
+        public int Dy => _b.Y - _a.Y;
+
         public GridAxis Axis => A.X == B.X ? GridAxis.Vertical : GridAxis.Horizontal;
 
         public IEnumerable<GridCoordinatePair> Interior
@@ -84,13 +87,17 @@ namespace PonderingProgrammer.GridMath.Shapes
             _b = B.Translation(x, y);
         }
 
-        public void Rotate(Grid4Rotation rotation)
+        public void Rotate(GridRotation rotation)
         {
-            throw new NotImplementedException();
+            var ticks = rotation.Ticks % 4;
+            var polarB = GridPolarCoordinates.FromGridCartesian(Dx, Dy);
+            polarB = polarB.Rotation(rotation.ToRadians(4));
+            _b = polarB.ToGridCartesian().Translation(_a.X, _a.Y);
         }
 
         public void Flip(GridAxis axis)
         {
+            Rotate(new GridRotation(2));
         }
 
         private GridInterval GetIntervalOnAxis()

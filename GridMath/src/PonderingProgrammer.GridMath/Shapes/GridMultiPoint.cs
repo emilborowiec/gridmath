@@ -70,7 +70,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             for (var i = 0; i < _positions.Count; i++) _positions[i] = _positions[i].Translation(x, y);
         }
 
-        public void Rotate(Grid4Rotation rotation)
+        public void Rotate(GridRotation rotation)
         {
             throw new NotImplementedException();
         }

@@ -40,7 +40,7 @@ namespace PonderingProgrammer.GridMath.Samples
             _oldState = mouseState;
         }
 
-        public void Draw(bool toggled)
+        public void Draw(bool toggled = false)
         {
             _spriteBatch.FillRectangle(_rect, toggled ? Color.Yellow : Color.White);
             _spriteBatch.DrawString(_font, Text, _rect.Location.ToVector2(), Color.Black);

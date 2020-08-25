@@ -44,9 +44,9 @@ namespace PonderingProgrammer.GridMath.Samples
         private Button[] _shapeButtons;
         private Dictionary<string, IGridShape> _shapes;
 
-        private readonly int _radius = 10;
-        private readonly Grid8Direction _direction = Grid8Direction.Right;
-        private GridAxis _axis = GridAxis.Horizontal;
+        private int _radius = 10;
+        private Grid8Direction _direction8 = Grid8Direction.Right;
+        private Grid4Direction _direction4 = Grid4Direction.Right;
 
         protected override void Initialize()
         {
@@ -58,6 +58,11 @@ namespace PonderingProgrammer.GridMath.Samples
             _segmentButton = new Button(12, 102, "Segment", _font, () => SwitchShape("Segment"), _spriteBatch);
             _circleButton = new Button(12, 132, "Circle", _font, () => SwitchShape("Circle"), _spriteBatch);
             _fanButton = new Button(12, 162, "Fan", _font, () => SwitchShape("Fan"), _spriteBatch);
+            
+            _radiusUpButton = new Button(250, 12, "Radius Up", _font, RadiusUp, _spriteBatch);
+            _radiusDownButton = new Button(250, 42, "Radius Down", _font, RadiusDown, _spriteBatch);
+            
+            _nextDirectionButton = new Button(500, 12, "Direction change", _font, DirectionChange, _spriteBatch);
 
             _shapeButtons = new[]
             {
@@ -73,10 +78,28 @@ namespace PonderingProgrammer.GridMath.Samples
                 ["AA Segment"] = new GridAASegment(_center, _center.Translation(0, _radius)),
                 ["Segment"] = new GridSegment(_center, _center.Translation(10, 10)),
                 ["Circle"] = new GridCircle(_center, _radius),
-                ["Fan"] = new GridFan(_center, _radius, _direction),
+                ["Fan"] = new GridFan(_center, _radius, _direction8),
             };
 
             SwitchShape("Point");
+        }
+
+        private void RadiusUp()
+        {
+            if (_radius < 30) _radius++;
+            UpdateShapeSprite();
+        }
+
+        public void RadiusDown()
+        {
+            if (_radius > 1) _radius--;
+            UpdateShapeSprite();
+        }
+
+        public void DirectionChange()
+        {
+            _direction8 = Directions.Rotate(_direction8, new GridRotation(1));
+            UpdateShapeSprite();
         }
 
         protected override void LoadContent()
@@ -94,6 +117,9 @@ namespace PonderingProgrammer.GridMath.Samples
             }
 
             foreach (var shapeButton in _shapeButtons) shapeButton.Update();
+            _radiusUpButton.Update();
+            _radiusDownButton.Update();
+            _nextDirectionButton.Update();
 
             base.Update(gameTime);
         }
@@ -108,6 +134,9 @@ namespace PonderingProgrammer.GridMath.Samples
             {
                 shapeButton.Draw(shapeButton.Text.Equals(_currentShape));
             }
+            _radiusUpButton.Draw();
+            _radiusDownButton.Draw();
+            _nextDirectionButton.Draw();
 
             _shapeSprite.Draw(_spriteBatch);
 
@@ -146,7 +175,7 @@ namespace PonderingProgrammer.GridMath.Samples
             if (_shape is GridFan f)
             {
                 f.Radius = _radius;
-                f.Direction = _direction;
+                f.Direction = _direction8;
             }
 
             _shapeSprite = new ShapeSprite(_shape, _scale, _graphics.GraphicsDevice);

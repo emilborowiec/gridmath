@@ -18,6 +18,8 @@ namespace PonderingProgrammer.GridMath
         public const double Degree270 = Math.PI * 1.5;
         public const double Degree315 = Math.PI * 1.75;
 
+        private const double Divider = Degree90 * 0.25;
+
         public const double Right = Degree0;
         public const double BottomRight = Degree45;
         public const double Bottom = Degree90;
@@ -59,49 +61,38 @@ namespace PonderingProgrammer.GridMath
         {
             angle = WrapAngle(angle);
 
-            if (angle >= BottomRight || angle < TopRight) return Grid4Direction.Right;
-            if (angle >= TopRight || angle < TopLeft) return Grid4Direction.Top;
-            if (angle >= TopLeft || angle < BottomLeft) return Grid4Direction.Left;
+            if (angle >= TopRight || angle < BottomRight) return Grid4Direction.Right;
+            if (angle >= TopLeft) return Grid4Direction.Top;
+            if (angle >= BottomLeft) return Grid4Direction.Left;
             return Grid4Direction.Bottom;
         }
 
         public static Grid8Direction AngleToDirection8(double angle)
         {
             angle = WrapAngle(angle);
-
-            if (angle >= BottomRight || angle < TopRight) return Grid8Direction.Right;
-            if (angle >= Right || angle < Top) return Grid8Direction.TopRight;
-            if (angle >= TopRight || angle < TopLeft) return Grid8Direction.Top;
-            if (angle >= Top || angle < Left) return Grid8Direction.TopLeft;
-            if (angle >= TopLeft || angle < BottomLeft) return Grid8Direction.Left;
-            if (angle >= Left || angle < Bottom) return Grid8Direction.BottomLeft;
-            if (angle >= Bottom || angle < Right) return Grid8Direction.BottomRight;
-            return Grid8Direction.Bottom;
+            
+            if (angle >= TopRight + Divider || angle < BottomRight - Divider) return Grid8Direction.Right;
+            if (angle >= Top + Divider) return Grid8Direction.TopRight; 
+            if (angle >= TopLeft + Divider) return Grid8Direction.Top; 
+            if (angle >= Left + Divider) return Grid8Direction.TopLeft; 
+            if (angle >= BottomLeft + Divider) return Grid8Direction.Left; 
+            if (angle >= Bottom + Divider) return Grid8Direction.BottomLeft; 
+            if (angle >= BottomRight + Divider) return Grid8Direction.Bottom; 
+            return Grid8Direction.BottomRight; 
         }
 
-        public static Grid4Direction Rotate(Grid4Direction direction, Grid4Rotation rotation)
+        public static Grid4Direction Rotate(Grid4Direction direction, GridRotation rotation)
         {
-            var rotAngle = Grid4RotationToAngle(rotation);
+            var rotAngle = rotation.ToRadians(4);
             var newAngle = DirectionToAngle(direction) + rotAngle;
             return AngleToDirection4(newAngle);
         }
 
-        public static Grid8Direction Rotate(Grid8Direction direction, Grid4Rotation rotation)
+        public static Grid8Direction Rotate(Grid8Direction direction, GridRotation rotation)
         {
-            var rotAngle = Grid4RotationToAngle(rotation);
+            var rotAngle = rotation.ToRadians(8);
             var newAngle = DirectionToAngle(direction) + rotAngle;
             return AngleToDirection8(newAngle);
-        }
-
-        public static double Grid4RotationToAngle(Grid4Rotation rotation)
-        {
-            var rotAngle = rotation switch
-            {
-                Grid4Rotation.Ccw90 => Top,
-                Grid4Rotation.Cw90 => Bottom,
-                _ => 0,
-            };
-            return rotAngle;
         }
 
         public static double WrapAngle(double angle)

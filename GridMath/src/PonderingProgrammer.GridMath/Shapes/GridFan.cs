@@ -167,7 +167,7 @@ namespace PonderingProgrammer.GridMath.Shapes
             _origin = _origin.Translation(x, y);
         }
 
-        public void Rotate(Grid4Rotation rotation)
+        public void Rotate(GridRotation rotation)
         {
             _direction = Directions.Rotate(_direction, rotation);
         }

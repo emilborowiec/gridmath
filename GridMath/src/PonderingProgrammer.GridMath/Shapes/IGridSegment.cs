@@ -8,5 +8,8 @@
     {
         GridCoordinatePair A { get; set; }
         GridCoordinatePair B { get; set; }
+        
+        int Dx { get; }
+        int Dy { get; }
     }
 }
