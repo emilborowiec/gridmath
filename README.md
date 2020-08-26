@@ -1,7 +1,5 @@
 # GridMath
 
-> This documentation is very much a work in progress. As is the whole library.
-
 GridMath is a lightweight library for applications relying heavily on grid geometry. 
 Example candidates include pixel art programs, certain kinds of games and procedural map generation libraries.
 
@@ -22,10 +20,20 @@ GridMath library currently supports only Square Grids. Support for Hex Grids wil
 
 **Real To Grid Conversions**
 
-- Real number to grid number.
-- Grid number to real number.
+We model our Square Grid as a coordinate space over set of integer numbers Z, 
+with the following correspondence to real numbers R:
+
+- For each integer number n, half-open real interval R[n,n+1) maps to n in our discrete integer space.
+- Conversely, the n maps to a midpoint of corresponding real interval, so Z(n) => R(n + 0.5)
 
 **Grid Coordinates**
+
+Grid Coordinates are more precisely 2D Square Grid Coordinates.
+While one-dimensional integer value maps to real interval,
+grid coordinates map to a square in real coordinate space.
+Origin of Grid Coordinate space maps to point (0.5,0.5) of real coordinate space.
+
+Supported features include:  
 
 - Read-only value type for storing Grid Coordinates.
 - Mapping to and from cartesian plane coordinates.
@@ -34,129 +42,78 @@ GridMath library currently supports only Square Grids. Support for Hex Grids wil
 
 **Grid Polar Coordinates**
 
+Like normal polar coordinates, those are expressed with Radius and Theta angle.
+Reference point of those coordinates corresponds to point (0,0) in Grid Coordinate space,
+which in turn is (0.5,0.5) in real cartesian coordinates.
+
 - Read-only value type for storing Grid Polar Coordinates.
-- 
+- Conversion to and from Grid Coordinates.
+- Rotation around angle.
 
 **Grid Directions and Rotations**
 
-- 
+- Support for cardinal directions (up, down, left, right) and intermediate directions (with diagonals).
+- Conversion to and from angles (angle intervals are approximated to nearest direction).
+- Grid rotation of directions and angles. Grid rotation is expressed in subdivision and number of ticks to go either clockwise or counterclockwise.
 
 **Grid Direction Coordinates**
 
-- 
+Grid Direction Coordinates are like Grid Polar Coordinates, but simplified to use Direction instead of angle.
+Useful to express simple translation vectors on grid.
+
+- Mapping to Grid Coordinates.
 
 **Grid Intervals**
 
-- 
+Grid Interval are one dimensional grid-geometry objects.
+
+- Read-only value type for storing intervals.
+- Finding center.
+- Spatial tests (contains, overlaps, touches).
+- Measuring distance and overlap depth to point or other interval.
+- Translations.
+- Alignment relative to other interval with an anchor.
+- Separation of overlapping intervals.
+- Algorithm for finding subsets of overlapping intervals in larger collection.
+- Algorithm for interval packing with given spacing.
 
 **Grid Bounding Boxes**
 
-- 
+Grid Bounding Boxes are axis-aligned bounding boxes composed of two intervals - along X and Y axes.
+
+- Read-only value type for storing bounding boxes.
+- Finding center.
+- Spatial tests (contains, overlaps, touches).
+- Finding bounding boxes nearest point to other point. 
+- Alignment relative to other bounding box with an anchor for each axis.
+- Algorithm for finding subsets of overlapping bounding boxes in larger collection.
+- Algorithm for box packing with given spacing (needs improvement).
 
 **Rasterization**
 
-- 
+Rasterization is about approximating real geometry on discrete medium.
+
+- Bresenham's algorithm for plotting lines on grid
+- Bresenham's algorithm for plotting circles on grid
+- FloodFill algorithm to find grid points within arbitrary bounds
+- Finding octant of segment slope
 
 **Grid Shapes**
 
-- 
+Grid shapes are geometrical shapes approximated to discrete grid.
 
+- Supported shapes:
+    - Point,
+    - Axis aligned rectangle,
+    - Axis aligned line segment,
+    - Line segment,
+    - Circle,
+    - Fan (circle quadrant)
+- Bounding boxes
+- Enumerating edge of the shape
+- Enumerating interior of the shape
+- Spatial testing (contains and overlaps)
+- Translation
+- Rotation
 
-## Real to Grid Conversion
-
-
-
-
-
-## Grid coordinate system
-
-GridMath uses int to model a single grid coordinate.
-
-## Mapping from real coordinates to grid coordinates
-
-GridMath supports mapping real nubmers to grid coordinates.
-Each discrete grid coordinate N corresponds to half-opened interval in real space R[N,N+1)
-
-**todo:** drawing
-
-This mapping is be implemented by getting Floor of the real value and converting to int.
-Note that a simple cast of double to int only truncates the floating part.
-This gives correct results only for positive numbers.
-
-**todo:** drawing
-
-You can use `RealToGrid` utility class to do this mapping for you.
-
-## Grid Interval
-
-`GridInterval` is our one-dimensional workhorse.
-
-The class offers 3 convenient representations of an interval:
-
-- Min to Max
-- Min to Exclusive Max
-- Min and Length
-
-**todo:** drawing
-
-Here are some of the method offered by `GridInterval`:
-
-**Contains**
-
-TODO: write about it
-
-**Overlaps**
-
-TODO: write about it
-
-**Touches**
-
-TODO: write about it
-
-**Translate**
-
-TODO: write about it
-
-**Relate**
-
-TODO: write about it
-
-**Multiply**
-
-TODO: write about it
-
-**Distance**
-
-TODO: write about it
-
-**Depth**
-
-There is also a utility class `GridIntervals` for more complex operations on intervals.
-Some of the supported operations include:
-
-**Finding subsets of overlapping intervals in collection**
-
-TODO: write about it
-
-**Packing intervals**
-
-TODO: write about it
-
-## 2D Grid Coordinates
-
-`GridCoordinatePair` object stores x and y coordinates pointing to a place on 2d grid. 
-Not very exciting but it also supports measuring Manhattan and Chebyshev distance to another location.
-
-## Grid Bounding Box
-
-`GridBoudningBox` is our two-dimensional workhorse and corresponding 
-`GridBoundingBoxes` utility class supports complex operations on collections of boxes.
-
-**Finding subset of overlapping boxes in collection**
-
-TODO: write about it
-
-**Packing boxes**
-
-TODO: write about it
 
