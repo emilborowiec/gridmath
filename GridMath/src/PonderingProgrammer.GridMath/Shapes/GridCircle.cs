@@ -11,6 +11,11 @@ namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridCircle : IGridShape
     {
+        public GridCircle(int cx, int cy, int radius) : this(new GridCoordinatePair(cx, cy), radius)
+        {
+            
+        }
+        
         public GridCircle(GridCoordinatePair center, int radius)
         {
             if (radius < 1) throw new ArgumentOutOfRangeException(nameof(radius), radius, null);

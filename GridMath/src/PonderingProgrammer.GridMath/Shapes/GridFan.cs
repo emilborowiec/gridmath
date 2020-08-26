@@ -38,7 +38,6 @@ namespace PonderingProgrammer.GridMath.Shapes
         {
             get
             {
-                if (_radius == 1) return Enumerable.Empty<GridCoordinatePair>();
                 var edges = Edge.ToArray();
                 var floodStart = new GridDirectionCoordinates(_direction, 1).ToGridCartesian();
                 var fill = FloodFill.GetFloodFillCoordinates(

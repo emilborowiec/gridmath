@@ -8,6 +8,10 @@ namespace PonderingProgrammer.GridMath.Shapes
 {
     public class GridPoint : IGridPoint
     {
+        public GridPoint(int x, int y) : this(new GridCoordinatePair(x, y))
+        {
+        }
+        
         public GridPoint(GridCoordinatePair position)
         {
             Position = position;
@@ -26,6 +30,9 @@ namespace PonderingProgrammer.GridMath.Shapes
             get => _position;
             set => _position = value;
         }
+
+        public int X => Position.X;
+        public int Y => Position.Y;
 
         public bool Contains(GridCoordinatePair position)
         {
