@@ -21,7 +21,7 @@ namespace PonderingProgrammer.GridMath.Shapes
         private GridCoordinatePair _a;
         private GridCoordinatePair _b;
 
-        public int Dx => _b.X - _a.Y;
+        public int Dx => _b.X - _a.X;
         public int Dy => _b.Y - _a.Y;
 
         public GridAxis Axis => A.X == B.X ? GridAxis.Vertical : GridAxis.Horizontal;
