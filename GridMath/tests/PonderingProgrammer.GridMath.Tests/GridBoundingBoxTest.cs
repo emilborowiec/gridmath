@@ -44,5 +44,18 @@ namespace PonderingProgrammer.GridMath.Tests
             Assert.Equal(20, onRight.MinX);
             Assert.Equal(10, onLeft.MaxXExcl);
         }
+
+        [Fact]
+        public void TestEquality()
+        {
+            var box1 = GridBoundingBox.FromMinMaxExcl(0, 0, 1, 3);
+            var box2 = GridBoundingBox.FromMinMax(0, 0, 0, 2);
+            var box3 = GridBoundingBox.FromMinMax(0, 0, 1, 3);
+            
+            Assert.Equal(box1, box2);
+            Assert.True(box1 == box2);
+            Assert.NotEqual(box1, box3);
+            Assert.True(box1 != box3);
+        }
     }
 }

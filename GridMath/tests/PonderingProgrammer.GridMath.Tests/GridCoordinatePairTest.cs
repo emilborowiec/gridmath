@@ -73,8 +73,10 @@ namespace PonderingProgrammer.GridMath.Tests
             var c3 = new GridCoordinatePair();
             var c4 = new GridCoordinatePair();
             Assert.Equal(c1, c2);
+            Assert.True(c1 == c2);
             Assert.Equal(c3, c4);
             Assert.NotEqual(c1, c3);
+            Assert.True(c1 != c3);
         }
     }
 }

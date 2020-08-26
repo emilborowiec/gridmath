@@ -131,19 +131,22 @@ namespace PonderingProgrammer.GridMath.Shapes
 
         public void Rotate(GridRotation rotation)
         {
-            var topRight =
-                GridPolarCoordinates.FromGridCartesian(
-                    _boundingBox.TopRight.Translation(
-                        -_boundingBox.Center.X,
-                        -_boundingBox.Center.Y));
-            var bottomLeft =
-                GridPolarCoordinates.FromGridCartesian(
-                    _boundingBox.BottomLeft.Translation(-_boundingBox.Center.X, -_boundingBox.Center.Y));
-            var rotatedTopRight = topRight.Rotation(rotation.ToRadians(4)).ToGridCartesian();
-            var rotatedBottomLeft = bottomLeft.Rotation(rotation.ToRadians(4)).ToGridCartesian();
-            _boundingBox = GridBoundingBox.FromMinMax(
-                rotatedTopRight.Translation(_boundingBox.Center.X, _boundingBox.Center.Y),
-                rotatedBottomLeft.Translation(_boundingBox.Center.X, _boundingBox.Center.Y));
+            var c = _boundingBox.Center;
+            var centeredBox = _boundingBox.Translation(-c.X, -c.Y);
+
+            var polarTopLeft = GridPolarCoordinates.FromGridCartesian(centeredBox.TopLeft);
+            var polarBotRight = GridPolarCoordinates.FromGridCartesian(centeredBox.BottomRight);
+            
+            var c1 = polarTopLeft
+                     .Rotation(rotation.ToRadians(4))
+                     .ToGridCartesian()
+                     .Translation(c.X, c.Y);
+            var c2 = polarBotRight
+                     .Rotation(rotation.ToRadians(4))
+                     .ToGridCartesian()
+                     .Translation(c.X, c.Y);
+            
+            _boundingBox = GridBoundingBox.FromMinMax(Math.Min(c1.X, c2.X), Math.Min(c1.Y, c2.Y), Math.Max(c1.X, c2.X), Math.Max(c1.Y, c2.Y));
         }
 
         public void Flip(GridAxis axis)

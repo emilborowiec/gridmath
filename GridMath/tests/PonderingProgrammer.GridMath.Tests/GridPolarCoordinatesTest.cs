@@ -33,9 +33,11 @@ namespace PonderingProgrammer.GridMath.Tests
         [Fact]
         public void TestConversionFromGridCartesian()
         {
-            var c = new GridCoordinatePair(10, 0);
-            var pc = GridPolarCoordinates.FromGridCartesian(c);
+            var pc = GridPolarCoordinates.FromGridCartesian(new GridCoordinatePair(10, 0));
             Assert.Equal(Directions.Right, pc.Theta);
+            Assert.Equal(10, pc.Radius);
+            pc = GridPolarCoordinates.FromGridCartesian(new GridCoordinatePair(0, 10));
+            Assert.Equal(Directions.Bottom, pc.Theta);
             Assert.Equal(10, pc.Radius);
         }
 
@@ -54,6 +56,19 @@ namespace PonderingProgrammer.GridMath.Tests
             var c = pc.ToGridCartesian();
             Assert.Equal(expectedX, c.X);
             Assert.Equal(expectedY, c.Y);
+        }
+
+        [Fact]
+        public void TestEquality()
+        {
+            var pc1 = new GridPolarCoordinates(Math.PI, 1);
+            var pc2 = new GridPolarCoordinates(Math.PI*3, 1);
+            var pc3 = new GridPolarCoordinates(Math.PI+2, 1);
+            
+            Assert.Equal(pc1, pc2);
+            Assert.True(pc1 == pc2);
+            Assert.NotEqual(pc1, pc3);
+            Assert.True(pc1 != pc3);
         }
     }
 }

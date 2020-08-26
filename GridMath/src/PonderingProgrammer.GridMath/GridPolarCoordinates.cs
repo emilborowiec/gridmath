@@ -20,7 +20,7 @@ namespace PonderingProgrammer.GridMath
         public static GridPolarCoordinates FromGridCartesian(int x, int y)
         {
             var r = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-            var t = Math.Atan2(-y, x);
+            var t = Math.Atan2(y, x);
             return new GridPolarCoordinates(t, r);
         }
 

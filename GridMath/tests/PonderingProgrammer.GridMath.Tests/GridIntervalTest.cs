@@ -258,5 +258,18 @@ namespace PonderingProgrammer.GridMath.Tests
             Assert.Equal(5, translated.Min);
             Assert.Equal(7, translated.MaxExcl);
         }
+
+        [Fact]
+        public void TestEquality()
+        {
+            var i1 = new GridInterval(0, 2);
+            var i2 = GridInterval.FromExclusiveMax(0, 3);
+            var i3 = GridInterval.FromLength(0, 2);
+            
+            Assert.Equal(i1, i2);
+            Assert.True(i1 == i2);
+            Assert.NotEqual(i1, i3);
+            Assert.True(i1 != i3);
+        }
     }
 }
