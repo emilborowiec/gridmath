@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>GridMath</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Emil Borowiec</Authors>
+        <Company>Emil Borowiec</Company>
+        <PackageTags>Grid 2D Math Geometry Game</PackageTags>
+        <Description>
+            GridMath is a small library for creating and manipulating objects on 2d grid coordinate system.
+        </Description>
+        <PackageProjectUrl>https://github.com/emilborowiec/gridmath</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/emilborowiec/gridmath</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0" />
+    </ItemGroup>
+
+</Project>
