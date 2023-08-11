@@ -1,5 +1,7 @@
 ﻿#region
 
+using GridMath.Grids;
+using GridMath.Grids.LineGrids;
 using System;
 
 #endregion
@@ -12,7 +14,7 @@ namespace GridMath
     /// </summary>
     public readonly struct GridPolarCoordinates : IEquatable<GridPolarCoordinates>
     {
-        public static GridPolarCoordinates FromGridCartesian(GridCoordinatePair coords)
+        public static GridPolarCoordinates FromGridCartesian(XYGridCoordinate coords)
         {
             return FromGridCartesian(coords.X, coords.Y);
         }
@@ -54,10 +56,10 @@ namespace GridMath
             return new GridPolarCoordinates(Directions.WrapAngle(Theta + rotAngle), Radius);
         }
 
-        public GridCoordinatePair ToGridCartesian()
+        public XYGridCoordinate ToGridCartesian()
         {
             var (x, y) = ToRealCartesian();
-            return new GridCoordinatePair(GridConvert.ToGrid(x), GridConvert.ToGrid(y));
+            return new XYGridCoordinate(LineGridTransforms.RealToGrid(x), LineGridTransforms.RealToGrid(y));
         }
 
         public override bool Equals(object obj)
@@ -81,7 +83,7 @@ namespace GridMath
             var x = Radius * Math.Cos(Theta);
             var y = Radius * Math.Sin(Theta);
             // those values are now translated to real space, which has origin in (0.5,0.5)
-            return (GridConvert.ToReal(x), GridConvert.ToReal(y));
+            return (LineGridTransforms.GridToReal(x), LineGridTransforms.GridToReal(y));
         }
     }
 }

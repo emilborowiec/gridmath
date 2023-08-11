@@ -1,5 +1,6 @@
 ﻿#region
 
+using GridMath.Grids;
 using System;
 
 #endregion
@@ -30,19 +31,19 @@ namespace GridMath
         public Grid8Direction Direction { get; }
         public int Radius { get; }
 
-        public GridCoordinatePair ToGridCartesian()
+        public XYGridCoordinate ToGridCartesian()
         {
             return Direction switch
             {
-                Grid8Direction.TopLeft => new GridCoordinatePair(-Radius, -Radius),
-                Grid8Direction.Top => new GridCoordinatePair(0, -Radius),
-                Grid8Direction.TopRight => new GridCoordinatePair(Radius, -Radius),
-                Grid8Direction.Right => new GridCoordinatePair(Radius, 0),
-                Grid8Direction.BottomRight => new GridCoordinatePair(Radius, Radius),
-                Grid8Direction.Bottom => new GridCoordinatePair(0, Radius),
-                Grid8Direction.BottomLeft => new GridCoordinatePair(-Radius, Radius),
-                Grid8Direction.Left => new GridCoordinatePair(-Radius, 0),
-                _ => new GridCoordinatePair(),
+                Grid8Direction.TopLeft => new XYGridCoordinate(-Radius, -Radius),
+                Grid8Direction.Top => new XYGridCoordinate(0, -Radius),
+                Grid8Direction.TopRight => new XYGridCoordinate(Radius, -Radius),
+                Grid8Direction.Right => new XYGridCoordinate(Radius, 0),
+                Grid8Direction.BottomRight => new XYGridCoordinate(Radius, Radius),
+                Grid8Direction.Bottom => new XYGridCoordinate(0, Radius),
+                Grid8Direction.BottomLeft => new XYGridCoordinate(-Radius, Radius),
+                Grid8Direction.Left => new XYGridCoordinate(-Radius, 0),
+                _ => new XYGridCoordinate(),
             };
         }
 

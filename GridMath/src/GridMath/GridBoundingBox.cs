@@ -1,5 +1,7 @@
 #region
 
+using GridMath.Grids;
+using GridMath.Grids.LineGrids;
 using System;
 
 #endregion
@@ -14,7 +16,7 @@ namespace GridMath
     /// </remarks>
     public readonly struct GridBoundingBox : IEquatable<GridBoundingBox>
     {
-        public static GridBoundingBox FromMinMax(GridCoordinatePair topLeft, GridCoordinatePair bottomRight)
+        public static GridBoundingBox FromMinMax(XYGridCoordinate topLeft, XYGridCoordinate bottomRight)
         {
             return FromMinMax(topLeft.X, topLeft.Y, bottomRight.X, bottomRight.Y);
         }
@@ -22,8 +24,8 @@ namespace GridMath
         public static GridBoundingBox FromMinMax(int minX, int minY, int maxX, int maxY)
         {
             if (minX > maxX || minY > maxY) throw new ArgumentException("min cannot be greater than max");
-            var xInterval = new GridInterval(minX, maxX);
-            var yInterval = new GridInterval(minY, maxY);
+            var xInterval = new IntegerInterval(minX, maxX);
+            var yInterval = new IntegerInterval(minY, maxY);
             return new GridBoundingBox(xInterval, yInterval);
         }
 
@@ -34,16 +36,16 @@ namespace GridMath
                 throw new ArgumentException("Max is exclusive and must be greater than Min");
             }
 
-            var xInterval = GridInterval.FromExclusiveMax(minX, maxXExcl);
-            var yInterval = GridInterval.FromExclusiveMax(minY, maxYExcl);
+            var xInterval = IntegerIntervalUtils.FromExclusiveMax(minX, maxXExcl);
+            var yInterval = IntegerIntervalUtils.FromExclusiveMax(minY, maxYExcl);
             return new GridBoundingBox(xInterval, yInterval);
         }
 
         public static GridBoundingBox FromSize(int minX, int minY, int width, int height)
         {
             if (width < 1 || height < 1) throw new ArgumentException("Size must be greater than 0");
-            var xInterval = GridInterval.FromExclusiveMax(minX, minX + width);
-            var yInterval = GridInterval.FromExclusiveMax(minY, minY + height);
+            var xInterval = IntegerIntervalUtils.FromExclusiveMax(minX, minX + width);
+            var yInterval = IntegerIntervalUtils.FromExclusiveMax(minY, minY + height);
             return new GridBoundingBox(xInterval, yInterval);
         }
 
@@ -57,22 +59,22 @@ namespace GridMath
             return !(left == right);
         }
 
-        public GridBoundingBox(GridInterval xInterval, GridInterval yInterval)
+        public GridBoundingBox(IntegerInterval xInterval, IntegerInterval yInterval)
         {
             XInterval = xInterval;
             YInterval = yInterval;
-            TopLeft = new GridCoordinatePair(XInterval.Min, YInterval.Min);
-            TopRight = new GridCoordinatePair(XInterval.Max, YInterval.Min);
-            BottomRight = new GridCoordinatePair(XInterval.Max, YInterval.Max);
-            BottomLeft = new GridCoordinatePair(XInterval.Min, YInterval.Max);
+            TopLeft = new XYGridCoordinate(XInterval.Min, YInterval.Min);
+            TopRight = new XYGridCoordinate(XInterval.Max, YInterval.Min);
+            BottomRight = new XYGridCoordinate(XInterval.Max, YInterval.Max);
+            BottomLeft = new XYGridCoordinate(XInterval.Min, YInterval.Max);
         }
 
-        public GridInterval XInterval { get; }
-        public GridInterval YInterval { get; }
-        public GridCoordinatePair TopLeft { get; }
-        public GridCoordinatePair TopRight { get; }
-        public GridCoordinatePair BottomRight { get; }
-        public GridCoordinatePair BottomLeft { get; }
+        public IntegerInterval XInterval { get; }
+        public IntegerInterval YInterval { get; }
+        public XYGridCoordinate TopLeft { get; }
+        public XYGridCoordinate TopRight { get; }
+        public XYGridCoordinate BottomRight { get; }
+        public XYGridCoordinate BottomLeft { get; }
 
         public int MinX => XInterval.Min;
         public int MinY => YInterval.Min;
@@ -82,16 +84,16 @@ namespace GridMath
         public int Height => YInterval.Length;
         public int MaxXExcl => XInterval.MaxExcl;
         public int MaxYExcl => YInterval.MaxExcl;
-        public GridCoordinatePair Center => new GridCoordinatePair(XInterval.Center, YInterval.Center);
+        public XYGridCoordinate Center => new XYGridCoordinate(XInterval.Center, YInterval.Center);
 
         public bool Contains(int x, int y)
         {
             return XInterval.Contains(x) && YInterval.Contains(y);
         }
 
-        public bool Contains(GridCoordinatePair coordinatePair)
+        public bool Contains(XYGridCoordinate coordinate)
         {
-            return Contains(coordinatePair.X, coordinatePair.Y);
+            return Contains(coordinate.X, coordinate.Y);
         }
 
         public bool Contains(GridBoundingBox box)
@@ -112,24 +114,24 @@ namespace GridMath
                        (XInterval.Overlaps(other.XInterval) || XInterval.Touches(other.XInterval)));
         }
 
-        public GridCoordinatePair NearestPoint(int x, int y)
+        public XYGridCoordinate NearestPoint(int x, int y)
         {
             var xDistance = XInterval.Distance(x);
             var yDistance = YInterval.Distance(y);
 
-            if (xDistance == 0 && yDistance == 0) return new GridCoordinatePair(x, y);
+            if (xDistance == 0 && yDistance == 0) return new XYGridCoordinate(x, y);
 
             if (xDistance == 0)
             {
-                return new GridCoordinatePair(x, yDistance < 0 ? MinY : MaxY);
+                return new XYGridCoordinate(x, yDistance < 0 ? MinY : MaxY);
             }
 
             if (yDistance == 0)
             {
-                return new GridCoordinatePair(xDistance < 0 ? MinX : MaxX, y);
+                return new XYGridCoordinate(xDistance < 0 ? MinX : MaxX, y);
             }
 
-            return new GridCoordinatePair(xDistance < 0 ? MinX : MaxX, yDistance < 0 ? MinY : MaxY);
+            return new XYGridCoordinate(xDistance < 0 ? MinX : MaxX, yDistance < 0 ? MinY : MaxY);
         }
 
         public GridBoundingBox Translation(int x, int y)
@@ -182,8 +184,8 @@ namespace GridMath
 
         public GridBoundingBox Relate(
             GridBoundingBox other,
-            Relation xRelation,
-            Relation yRelation,
+            SpatialRelation xRelation,
+            SpatialRelation yRelation,
             int xOffset = 0,
             int yOffset = 0)
         {
@@ -196,10 +198,10 @@ namespace GridMath
         {
             return direction switch
             {
-                Grid4Direction.Top => Relate(other, Relation.CenterToCenter(), Relation.EndToStart(), 0, -1),
-                Grid4Direction.Right => Relate(other, Relation.StartToEnd(), Relation.CenterToCenter(), 1),
-                Grid4Direction.Bottom => Relate(other, Relation.CenterToCenter(), Relation.StartToEnd(), 0, 1),
-                Grid4Direction.Left => Relate(other, Relation.EndToStart(), Relation.CenterToCenter(), -1),
+                Grid4Direction.Top => Relate(other, SpatialRelation.CenterToCenter(), SpatialRelation.EndToStart(), 0, -1),
+                Grid4Direction.Right => Relate(other, SpatialRelation.StartToEnd(), SpatialRelation.CenterToCenter(), 1),
+                Grid4Direction.Bottom => Relate(other, SpatialRelation.CenterToCenter(), SpatialRelation.StartToEnd(), 0, 1),
+                Grid4Direction.Left => Relate(other, SpatialRelation.EndToStart(), SpatialRelation.CenterToCenter(), -1),
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null),
             };
         }

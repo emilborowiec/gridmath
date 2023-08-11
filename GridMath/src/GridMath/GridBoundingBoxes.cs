@@ -1,5 +1,6 @@
 ﻿#region
 
+using GridMath.Grids;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace GridMath
             var listOfOverlapLists = new List<List<int>>();
 
             var xOverlapGroups =
-                GridIntervals.FindOverlappingIntervals(boxes.Select(box => box.XInterval).ToArray());
+                GridIntervalUtils.FindOverlappingIntervals(boxes.Select(box => box.XInterval).ToArray());
             var yOverlapGroups =
-                GridIntervals.FindOverlappingIntervals(boxes.Select(box => box.YInterval).ToArray());
+                GridIntervalUtils.FindOverlappingIntervals(boxes.Select(box => box.YInterval).ToArray());
 
             // is there a list on x lists which has the same two or more indices that some y list
             foreach (var xOverlapList in xOverlapGroups)
@@ -39,11 +40,11 @@ namespace GridMath
             return listOfOverlapLists;
         }
 
-        public static GridCoordinatePair FindCenterOfMass(GridBoundingBox[] boxes)
+        public static XYGridCoordinate FindCenterOfMass(GridBoundingBox[] boxes)
         {
-            var xCenter = GridIntervals.FindCenterOfMass(boxes.Select(b => b.XInterval).ToArray());
-            var yCenter = GridIntervals.FindCenterOfMass(boxes.Select(b => b.YInterval).ToArray());
-            return new GridCoordinatePair(xCenter, yCenter);
+            var xCenter = GridIntervalUtils.FindCenterOfMass(boxes.Select(b => b.XInterval).ToArray());
+            var yCenter = GridIntervalUtils.FindCenterOfMass(boxes.Select(b => b.YInterval).ToArray());
+            return new XYGridCoordinate(xCenter, yCenter);
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace GridMath
             var originalTotalMaxY = int.MinValue;
             var newTotalMaxY = int.MinValue;
             var centerOfMass = FindCenterOfMass(boxes);
-            var possibilities = new List<GridCoordinatePair> {new GridCoordinatePair(0, 0)};
+            var possibilities = new List<XYGridCoordinate> {new XYGridCoordinate(0, 0)};
             for (var i = 0; i < boxes.Length; i++)
             {
                 if (originalTotalMinX > boxes[i].MinX) originalTotalMinX = boxes[i].MinX;
@@ -90,13 +91,13 @@ namespace GridMath
                     // alternate horizontal and vertical possibilities
                     if (i % 2 == 0)
                     {
-                        possibilities.Add(new GridCoordinatePair(box.MaxXExcl + spacing, box.MinY));
-                        possibilities.Add(new GridCoordinatePair(box.MinX, box.MaxYExcl + spacing));
+                        possibilities.Add(new XYGridCoordinate(box.MaxXExcl + spacing, box.MinY));
+                        possibilities.Add(new XYGridCoordinate(box.MinX, box.MaxYExcl + spacing));
                     }
                     else
                     {
-                        possibilities.Add(new GridCoordinatePair(box.MinX, box.MaxYExcl + spacing));
-                        possibilities.Add(new GridCoordinatePair(box.MaxXExcl + spacing, box.MinY));
+                        possibilities.Add(new XYGridCoordinate(box.MinX, box.MaxYExcl + spacing));
+                        possibilities.Add(new XYGridCoordinate(box.MaxXExcl + spacing, box.MinY));
                     }
 
                     if (newTotalMaxX < boxes[i].MaxX) newTotalMaxX = boxes[i].MaxX;
@@ -108,21 +109,21 @@ namespace GridMath
             var newCenterOfMass = FindCenterOfMass(boxes);
             var translation = alignment switch
             {
-                BoxAlignment.TopLeft => new GridCoordinatePair(originalTotalMinX, originalTotalMinY),
-                BoxAlignment.Top => new GridCoordinatePair(centerOfMass.X - newCenterOfMass.X, originalTotalMinY),
-                BoxAlignment.TopRight => new GridCoordinatePair(originalTotalMaxX - newTotalMaxX, originalTotalMinY),
-                BoxAlignment.Right => new GridCoordinatePair(
+                BoxAlignment.TopLeft => new XYGridCoordinate(originalTotalMinX, originalTotalMinY),
+                BoxAlignment.Top => new XYGridCoordinate(centerOfMass.X - newCenterOfMass.X, originalTotalMinY),
+                BoxAlignment.TopRight => new XYGridCoordinate(originalTotalMaxX - newTotalMaxX, originalTotalMinY),
+                BoxAlignment.Right => new XYGridCoordinate(
                     originalTotalMaxX - newTotalMaxX,
                     centerOfMass.Y - newCenterOfMass.Y),
-                BoxAlignment.BottomRight => new GridCoordinatePair(
+                BoxAlignment.BottomRight => new XYGridCoordinate(
                     originalTotalMaxX - newTotalMaxX,
                     originalTotalMaxY - newTotalMaxY),
-                BoxAlignment.Bottom => new GridCoordinatePair(
+                BoxAlignment.Bottom => new XYGridCoordinate(
                     centerOfMass.X - newCenterOfMass.X,
                     originalTotalMaxY - newTotalMaxY),
-                BoxAlignment.BottomLeft => new GridCoordinatePair(originalTotalMinX, originalTotalMaxY - newTotalMaxY),
-                BoxAlignment.Left => new GridCoordinatePair(originalTotalMinX, centerOfMass.Y - newCenterOfMass.Y),
-                BoxAlignment.Center => new GridCoordinatePair(
+                BoxAlignment.BottomLeft => new XYGridCoordinate(originalTotalMinX, originalTotalMaxY - newTotalMaxY),
+                BoxAlignment.Left => new XYGridCoordinate(originalTotalMinX, centerOfMass.Y - newCenterOfMass.Y),
+                BoxAlignment.Center => new XYGridCoordinate(
                     centerOfMass.X - newCenterOfMass.X,
                     centerOfMass.Y - newCenterOfMass.Y),
                 _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null),

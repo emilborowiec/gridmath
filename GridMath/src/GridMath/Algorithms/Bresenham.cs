@@ -1,5 +1,6 @@
 ﻿#region
 
+using GridMath.Grids;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,21 +11,21 @@ namespace GridMath.Algorithms
 {
     public static class Bresenham
     {
-        public static IEnumerable<GridCoordinatePair> PlotLine(int x1, int y1, int x2, int y2)
+        public static IEnumerable<XYGridCoordinate> PlotLine(int x1, int y1, int x2, int y2)
         {
             var dx = x2 - x1;
             var dy = y2 - y1;
-            if (dx == 0 && dy == 0) return new[] {new GridCoordinatePair(x1, y1)};
+            if (dx == 0 && dy == 0) return new[] {new XYGridCoordinate(x1, y1)};
             if (dy == 0)
             {
                 return Enumerable.Range(Math.Min(x1, x2), Math.Abs(x2 - x1) + 1)
-                                 .Select(x => new GridCoordinatePair(x, y1));
+                                 .Select(x => new XYGridCoordinate(x, y1));
             }
 
             if (dx == 0)
             {
                 return Enumerable.Range(Math.Min(y1, y2), Math.Abs(y2 - y1) + 1)
-                                 .Select(y => new GridCoordinatePair(x1, y));
+                                 .Select(y => new XYGridCoordinate(x1, y));
             }
 
             var octant = Octants.GetOctant(dx, dy);
@@ -40,17 +41,17 @@ namespace GridMath.Algorithms
                 Octant.Five => HighLine(x2, y2, x1, y1),
                 Octant.Six => HighLine(x2, y2, x1, y1),
                 Octant.Seven => LowLine(x1, y1, x2, y2),
-                _ => Enumerable.Empty<GridCoordinatePair>(),
+                _ => Enumerable.Empty<XYGridCoordinate>(),
             };
         }
 
-        public static IEnumerable<GridCoordinatePair> PlotCircle(int xc, int yc, int r)
+        public static IEnumerable<XYGridCoordinate> PlotCircle(int xc, int yc, int r)
         {
-            if (r == 0) return new[] {new GridCoordinatePair(xc, yc)};
+            if (r == 0) return new[] {new XYGridCoordinate(xc, yc)};
             var x = 0;
             var y = r;
             var d = 3 - (2 * r);
-            var plot = new List<GridCoordinatePair>();
+            var plot = new List<XYGridCoordinate>();
             plot.AddRange(PlotOnAllOctants(xc, yc, x, y));
             while (y >= x)
             {
@@ -76,7 +77,7 @@ namespace GridMath.Algorithms
             return plot;
         }
 
-        private static IEnumerable<GridCoordinatePair> LowLine(int x1, int y1, int x2, int y2)
+        private static IEnumerable<XYGridCoordinate> LowLine(int x1, int y1, int x2, int y2)
         {
             var dx = x2 - x1;
             var dy = y2 - y1;
@@ -92,7 +93,7 @@ namespace GridMath.Algorithms
 
             for (var x = x1; x <= x2; x++)
             {
-                yield return new GridCoordinatePair(x, y);
+                yield return new XYGridCoordinate(x, y);
                 if (decision >= 0)
                 {
                     y += sign;
@@ -103,7 +104,7 @@ namespace GridMath.Algorithms
             }
         }
 
-        private static IEnumerable<GridCoordinatePair> HighLine(int x1, int y1, int x2, int y2)
+        private static IEnumerable<XYGridCoordinate> HighLine(int x1, int y1, int x2, int y2)
         {
             var dx = x2 - x1;
             var dy = y2 - y1;
@@ -119,7 +120,7 @@ namespace GridMath.Algorithms
 
             for (var y = y1; y <= y2; y++)
             {
-                yield return new GridCoordinatePair(x, y);
+                yield return new XYGridCoordinate(x, y);
                 if (decision >= 0)
                 {
                     x += sign;
@@ -130,16 +131,16 @@ namespace GridMath.Algorithms
             }
         }
 
-        private static IEnumerable<GridCoordinatePair> PlotOnAllOctants(int xc, int yc, int x, int y)
+        private static IEnumerable<XYGridCoordinate> PlotOnAllOctants(int xc, int yc, int x, int y)
         {
-            yield return new GridCoordinatePair(xc + x, yc + y);
-            yield return new GridCoordinatePair(xc - x, yc + y);
-            yield return new GridCoordinatePair(xc + x, yc - y);
-            yield return new GridCoordinatePair(xc - x, yc - y);
-            yield return new GridCoordinatePair(xc + y, yc + x);
-            yield return new GridCoordinatePair(xc - y, yc + x);
-            yield return new GridCoordinatePair(xc + y, yc - x);
-            yield return new GridCoordinatePair(xc - y, yc - x);
+            yield return new XYGridCoordinate(xc + x, yc + y);
+            yield return new XYGridCoordinate(xc - x, yc + y);
+            yield return new XYGridCoordinate(xc + x, yc - y);
+            yield return new XYGridCoordinate(xc - x, yc - y);
+            yield return new XYGridCoordinate(xc + y, yc + x);
+            yield return new XYGridCoordinate(xc - y, yc + x);
+            yield return new XYGridCoordinate(xc + y, yc - x);
+            yield return new XYGridCoordinate(xc - y, yc - x);
         }
     }
 }
